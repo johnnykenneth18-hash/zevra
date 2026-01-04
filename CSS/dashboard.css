@@ -1,0 +1,3504 @@
+/* ======================================== */
+/* COMPLETE DASHBOARD CSS - MOBILE FIXES */
+/* ======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+    --primary-color: #4361ee;
+    --secondary-color: #3a0ca3;
+    --success-color: #4cc9f0;
+    --danger-color: #f72585;
+    --warning-color: #ff9e00;
+    --dark-color: #1a1a2e;
+    --light-color: #f8f9fa;
+    --sidebar-width: 250px;
+    --border-radius: 12px;
+    --box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: var(--sidebar-width);
+    background: var(--dark-color);
+    color: white;
+    padding: 25px 0;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 0 25px 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo i {
+    font-size: 2.5rem;
+    color: var(--success-color);
+}
+
+.logo h2 {
+    font-size: 1.8rem;
+    background: linear-gradient(45deg, #4cc9f0, #4361ee);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.nav-menu {
+    flex: 1;
+    padding: 30px 0;
+}
+
+.nav-menu ul {
+    list-style: none;
+}
+
+.nav-item {
+    padding: 15px 25px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+}
+
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-left-color: var(--success-color);
+    padding-left: 30px;
+}
+
+.nav-item.active {
+    background: linear-gradient(90deg, rgba(67, 97, 238, 0.2), transparent);
+    border-left-color: var(--primary-color);
+}
+
+.nav-item i {
+    font-size: 1.2rem;
+    width: 24px;
+    text-align: center;
+}
+
+.nav-item span {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.user-info {
+    padding: 20px 25px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(45deg, var(--primary-color), var(--success-color));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.user-details h4 {
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+.user-details p {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Main Content Styles */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.main-header {
+    padding: 25px 35px;
+    background: white;
+    border-bottom: 1px solid #eaeaea;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-left h1 {
+    font-size: 1.8rem;
+    color: var(--dark-color);
+    margin-bottom: 5px;
+}
+
+.header-left p {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.logout-btn {
+    background: #f72585;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.3s;
+}
+
+.logout-btn:hover {
+    background: #d90429;
+}
+
+.notification {
+    position: relative;
+    cursor: pointer;
+    font-size: 1.3rem;
+    color: #666;
+}
+
+.notification-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--danger-color);
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.current-time {
+    font-size: 0.95rem;
+    color: #666;
+    background: #f5f5f5;
+    padding: 8px 15px;
+    border-radius: 20px;
+}
+
+/* Content Area */
+.content-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 30px;
+}
+
+.content-section {
+    display: none;
+}
+
+.content-section.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Dashboard Styles */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.dashboard-card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: var(--box-shadow);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.card-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+}
+
+.balance-card .card-icon {
+    background: linear-gradient(45deg, #4cc9f0, #4361ee);
+    color: white;
+}
+
+.deposit-card .card-icon {
+    background: linear-gradient(45deg, #00b09b, #96c93d);
+    color: white;
+}
+
+.withdrawal-card .card-icon {
+    background: linear-gradient(45deg, #ff416c, #ff4b2b);
+    color: white;
+}
+
+.interest-card .card-icon {
+    background: linear-gradient(45deg, #ff9a00, #ff5e00);
+    color: white;
+}
+
+.card-content h3 {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.amount {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.trend {
+    font-size: 0.85rem;
+    padding: 3px 10px;
+    border-radius: 15px;
+    display: inline-block;
+}
+
+.trend.positive {
+    background: rgba(76, 201, 240, 0.1);
+    color: #4cc9f0;
+}
+
+.trend.negative {
+    background: rgba(247, 37, 133, 0.1);
+    color: #f72585;
+}
+
+.recent-transactions {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: var(--box-shadow);
+}
+
+.recent-transactions h2 {
+    margin-bottom: 20px;
+    color: var(--dark-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.transactions-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* Payment Methods Display Styles - NEW */
+.payment-methods-section {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: var(--box-shadow);
+    margin-top: 30px;
+}
+
+.payment-methods-section h2 {
+    color: var(--dark-color);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.payment-methods-section p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.methods-display {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.method-card-display {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid #eaeaea;
+    transition: all 0.3s ease;
+}
+
+.method-card-display:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.method-card-display h4 {
+    color: var(--dark-color);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.method-card-display h4 i {
+    color: var(--primary-color);
+}
+
+.method-details-display {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    white-space: pre-wrap;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 10px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.method-type-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.method-type-badge.bank {
+    background: rgba(67, 97, 238, 0.1);
+    color: #4361ee;
+}
+
+.method-type-badge.crypto {
+    background: rgba(76, 201, 240, 0.1);
+    color: #4cc9f0;
+}
+
+.loading-methods,
+.no-methods {
+    text-align: center;
+    padding: 30px;
+    color: #666;
+    font-style: italic;
+    grid-column: 1 / -1;
+}
+
+/* Section Header */
+.section-header {
+    margin-bottom: 30px;
+}
+
+.section-header h2 {
+    font-size: 1.8rem;
+    color: var(--dark-color);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-header p {
+    color: #666;
+}
+
+/* ======================================== */
+/* DEPOSIT SECTION FIXES - CRITICAL MOBILE FIX */
+/* ======================================== */
+.deposit-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.deposit-form {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: var(--box-shadow);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    color: var(--dark-color);
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #eaeaea;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+}
+
+/* CRITICAL FIX: Method-specific fields visibility */
+#bank-fields,
+#crypto-fields,
+#card-fields,
+#withdrawal-bank-fields,
+#withdrawal-crypto-fields {
+    display: none !important;
+    opacity: 0;
+    visibility: hidden;
+    height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+/* Active state for mobile compatibility */
+#bank-fields.active,
+#crypto-fields.active,
+#card-fields.active,
+#withdrawal-bank-fields.active,
+#withdrawal-crypto-fields.active {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    height: auto !important;
+    overflow: visible !important;
+}
+
+.method-fields {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border: 1px solid #eaeaea;
+}
+
+/* Force method fields to show properly on all devices */
+.method-fields[style*="display: block"] {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Ensure proper layout for method fields */
+.method-fields {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 15px;
+    align-items: start;
+}
+
+/* Make sure all form inputs have consistent height */
+.method-fields .form-group input,
+.method-fields .form-group select {
+    height: 46px;
+    min-height: 46px;
+    box-sizing: border-box;
+    font-size: 16px !important; /* Prevent iOS zoom */
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.bank-details,
+.crypto-details {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+    border: 1px solid #eaeaea;
+    font-size: 0.9rem;
+    white-space: pre-wrap;
+    font-family: 'Courier New', monospace;
+}
+
+.bank-details pre,
+.crypto-details pre {
+    white-space: pre-wrap;
+    font-family: 'Courier New', monospace;
+    margin: 0;
+}
+
+.range-container {
+    margin-top: 10px;
+}
+
+.range-container input[type="range"] {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: #eaeaea;
+    outline: none;
+    margin: 15px 0;
+}
+
+.range-container input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+}
+
+.range-labels {
+    display: flex;
+    justify-content: space-between;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.interest-info {
+    background: rgba(76, 201, 240, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.interest-info h3 {
+    color: var(--dark-color);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn {
+    padding: 15px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.deposit-btn {
+    background: linear-gradient(45deg, #00b09b, #96c93d);
+    color: white;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.deposit-btn:hover {
+    background: linear-gradient(45deg, #009688, #8bc34a);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 176, 155, 0.3);
+}
+
+.note {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: #666;
+    text-align: center;
+    font-style: italic;
+}
+
+.deposit-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.preview-card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: var(--box-shadow);
+}
+
+.preview-card h3 {
+    color: var(--dark-color);
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.preview-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.preview-item:last-child {
+    border-bottom: none;
+}
+
+.preview-item.total {
+    font-size: 1.2rem;
+    color: var(--dark-color);
+    font-weight: 700;
+}
+
+.week-breakdown {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: var(--box-shadow);
+}
+
+.week-breakdown h4 {
+    color: var(--dark-color);
+    margin-bottom: 15px;
+}
+
+.breakdown-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.breakdown-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.breakdown-item:last-child {
+    border-bottom: none;
+}
+
+/* Withdrawal Section */
+.withdrawal-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.withdrawal-form {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: var(--box-shadow);
+}
+
+.fee-info {
+    background: rgba(247, 37, 133, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.fee-info h3 {
+    color: var(--dark-color);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.withdrawal-btn {
+    background: linear-gradient(45deg, #ff416c, #ff4b2b);
+    color: white;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.withdrawal-btn:hover {
+    background: linear-gradient(45deg, #e5395c, #f44336);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 65, 108, 0.3);
+}
+
+.withdrawal-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.quick-amounts {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: var(--box-shadow);
+}
+
+.quick-amounts h4 {
+    color: var(--dark-color);
+    margin-bottom: 15px;
+}
+
+.quick-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.quick-btn {
+    padding: 12px;
+    background: #f0f0f0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.quick-btn:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* Profile Section */
+.profile-container {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 30px;
+}
+
+.profile-sidebar {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: var(--box-shadow);
+}
+
+.profile-avatar {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.profile-avatar i {
+    font-size: 100px;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    display: block;
+}
+
+.change-photo {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.profile-stats {
+    border-top: 2px solid #f0f0f0;
+    padding-top: 20px;
+}
+
+.profile-stats h3 {
+    color: var(--dark-color);
+    margin-bottom: 20px;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.stat-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.level-premium {
+    color: #ff9e00;
+    font-weight: 600;
+}
+
+.status-verified {
+    color: #4cc9f0;
+    font-weight: 600;
+}
+
+.profile-content {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: var(--box-shadow);
+}
+
+.profile-form {
+    margin-bottom: 30px;
+}
+
+.save-btn {
+    background: linear-gradient(45deg, #00b09b, #96c93d);
+    color: white;
+}
+
+.secondary-btn {
+    background: #f0f0f0;
+    color: var(--dark-color);
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.security-settings {
+    border-top: 2px solid #f0f0f0;
+    padding-top: 25px;
+}
+
+.security-settings h3 {
+    color: var(--dark-color);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.security-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.security-item:last-child {
+    border-bottom: none;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked+.slider {
+    background-color: var(--primary-color);
+}
+
+input:checked+.slider:before {
+    transform: translateX(30px);
+}
+
+/* History Section */
+.history-controls {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 20px;
+    box-shadow: var(--box-shadow);
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.filter-group {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.filter-group select,
+.filter-group input[type="date"] {
+    padding: 10px 15px;
+    border: 2px solid #eaeaea;
+    border-radius: 8px;
+    font-size: 0.95rem;
+}
+
+.filter-btn {
+    background: var(--primary-color);
+    color: white;
+}
+
+.export-btn {
+    background: #4cc9f0;
+    color: white;
+}
+
+.history-table-container {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: var(--box-shadow);
+    margin-bottom: 30px;
+    overflow-x: auto;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.history-table th {
+    background: #f8f9fa;
+    padding: 15px;
+    text-align: left;
+    color: var(--dark-color);
+    font-weight: 600;
+    border-bottom: 2px solid #eaeaea;
+}
+
+.history-table td {
+    padding: 15px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.history-table tr:hover {
+    background: #f8f9fa;
+}
+
+.transaction-type {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.transaction-type.deposit {
+    background: rgba(76, 201, 240, 0.1);
+    color: #4cc9f0;
+}
+
+.transaction-type.withdrawal {
+    background: rgba(247, 37, 133, 0.1);
+    color: #f72585;
+}
+
+.history-table .deposit {
+    color: #4cc9f0;
+    font-weight: 600;
+}
+
+.history-table .withdrawal {
+    color: #f72585;
+    font-weight: 600;
+}
+
+.status {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.status.completed {
+    background: rgba(76, 201, 240, 0.1);
+    color: #4cc9f0;
+}
+
+.status.pending {
+    background: rgba(255, 158, 0, 0.1);
+    color: #ff9e00;
+}
+
+.history-summary {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: var(--box-shadow);
+}
+
+.summary-card h3 {
+    color: var(--dark-color);
+    margin-bottom: 20px;
+}
+
+.summary-content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.summary-item {
+    text-align: center;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.summary-item strong {
+    display: block;
+    font-size: 1.5rem;
+    margin-top: 10px;
+}
+
+.summary-item .positive {
+    color: #4cc9f0;
+}
+
+.summary-item .negative {
+    color: #f72585;
+}
+
+/* Partnership Section */
+.partnership-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.partnership-card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: var(--box-shadow);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.partnership-card .card-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(45deg, #3a0ca3, #4361ee);
+    color: white;
+}
+
+.referral-section {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 30px;
+    box-shadow: var(--box-shadow);
+    margin-bottom: 40px;
+}
+
+.referral-info {
+    margin-bottom: 30px;
+}
+
+.referral-info h3 {
+    color: var(--dark-color);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.referral-link {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.referral-link input {
+    flex: 1;
+    padding: 12px 15px;
+    border: 2px solid #eaeaea;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    background: #f8f9fa;
+}
+
+.copy-btn {
+    background: var(--primary-color);
+    color: white;
+}
+
+.referral-steps h3 {
+    color: var(--dark-color);
+    margin-bottom: 20px;
+}
+
+.steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.step {
+    text-align: center;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin: 0 auto 15px;
+}
+
+.referral-history {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 30px;
+    box-shadow: var(--box-shadow);
+}
+
+.referral-history h3 {
+    color: var(--dark-color);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.referrals-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Accounts Section */
+.accounts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.account-card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: var(--box-shadow);
+}
+
+.account-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.account-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(45deg, #4cc9f0, #4361ee);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.account-info h3 {
+    color: var(--dark-color);
+    margin-bottom: 5px;
+}
+
+.account-number {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.account-balance {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.account-balance .amount {
+    font-size: 1.8rem;
+    color: var(--dark-color);
+}
+
+.account-status {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.account-status.active {
+    background: rgba(76, 201, 240, 0.1);
+    color: #4cc9f0;
+}
+
+.account-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-btn {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid #eaeaea;
+    background: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.add-account-section {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 30px;
+    box-shadow: var(--box-shadow);
+    margin-bottom: 40px;
+}
+
+.add-account-section h3 {
+    color: var(--dark-color);
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.add-account-form {
+    max-width: 600px;
+}
+
+.add-account-btn {
+    background: var(--primary-color);
+    color: white;
+    margin-top: 20px;
+}
+
+.transfer-section {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 30px;
+    box-shadow: var(--box-shadow);
+}
+
+.transfer-section h3 {
+    color: var(--dark-color);
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.transfer-form {
+    max-width: 600px;
+}
+
+.transfer-action-btn {
+    background: linear-gradient(45deg, #3a0ca3, #4361ee);
+    color: white;
+    margin-top: 20px;
+}
+
+/* ======================================== */
+/* MOBILE MODAL FIXES - CRITICAL */
+/* ======================================== */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal.active {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.modal-content {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 30px;
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #eaeaea;
+}
+
+.modal-header h2 {
+    color: var(--dark-color);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+}
+
+.success-icon {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.success-icon i {
+    font-size: 80px;
+    color: #4cc9f0;
+}
+
+.deposit-details,
+.withdrawal-details {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.deposit-details p,
+.withdrawal-details p {
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+/* Transaction Items */
+.transaction-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    transition: background 0.3s;
+}
+
+.transaction-item:hover {
+    background: #f8f9fa;
+}
+
+.transaction-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+}
+
+.transaction-item.deposit .transaction-icon {
+    background: rgba(76, 201, 240, 0.1);
+    color: #4cc9f0;
+}
+
+.transaction-item.withdrawal .transaction-icon {
+    background: rgba(247, 37, 133, 0.1);
+    color: #f72585;
+}
+
+.transaction-details h4 {
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.transaction-date {
+    color: #666;
+    font-size: 0.85rem;
+}
+
+.transaction-amount {
+    margin-left: auto;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.transaction-amount.deposit {
+    color: #4cc9f0;
+}
+
+.transaction-amount.withdrawal {
+    color: #f72585;
+}
+
+.no-transactions,
+.no-referrals {
+    text-align: center;
+    padding: 30px;
+    color: #666;
+    font-style: italic;
+}
+
+.referral-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.referral-item:last-child {
+    border-bottom: none;
+}
+
+.referral-info h4 {
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.referral-date {
+    color: #666;
+    font-size: 0.85rem;
+}
+
+.referral-stats {
+    display: flex;
+    gap: 20px;
+}
+
+.referral-stats .stat {
+    text-align: right;
+}
+
+.referral-stats .stat span {
+    display: block;
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.referral-stats .stat strong {
+    font-size: 1rem;
+}
+
+.referral-stats .commission {
+    color: #4cc9f0;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #3a0ca3;
+}
+
+/* ======================================== */
+/* CRITICAL MOBILE RESPONSIVE FIXES */
+/* ======================================== */
+
+/* FIX 1: Bottom Navigation Stays Fixed */
+@media screen and (max-width: 767px) {
+    body {
+        padding: 0;
+        margin: 0;
+        background: white;
+        min-height: 100vh;
+        overflow-x: hidden;
+        position: relative;
+    }
+
+    .container {
+        margin: 0;
+        border-radius: 0;
+        min-height: 100vh;
+        flex-direction: column;
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    /* Convert sidebar to bottom navigation */
+    .sidebar {
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        height: 60px !important;
+        padding-bottom: env(safe-area-inset-bottom); /* For iOS */
+        z-index: 1000 !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        flex-direction: row !important;
+        transform: translateY(0) !important;
+        transition: transform 0.3s ease !important;
+    }
+
+    .logo {
+        display: none !important;
+    }
+
+    .user-info {
+        display: none !important;
+    }
+
+    .nav-menu {
+        display: flex !important;
+        width: 100% !important;
+        padding: 0 !important;
+    }
+
+    .nav-menu ul {
+        display: flex !important;
+        width: 100% !important;
+        justify-content: space-around !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .nav-item {
+        flex-direction: column !important;
+        padding: 8px 5px !important;
+        border-left: none !important;
+        border-top: 3px solid transparent !important;
+        width: 100% !important;
+        text-align: center !important;
+        margin: 0 !important;
+        min-height: 70px;
+    }
+
+    .nav-item:hover,
+    .nav-item.active {
+        border-left: none !important;
+        border-top-color: var(--primary-color) !important;
+        padding-left: 5px !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+    }
+
+    .nav-item span {
+        font-size: 0.75rem !important;
+        margin-top: 3px !important;
+        display: block !important;
+    }
+
+    .nav-item i {
+        font-size: 1rem !important;
+        width: auto !important;
+    }
+
+    /* Main content adjustment */
+    .main-content {
+        margin-bottom: 60px !important;
+        width: 100% !important;
+        padding-bottom: env(safe-area-inset-bottom) !important;
+    }
+
+    .main-header {
+        padding: 15px !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 10px !important;
+    }
+
+    .header-left h1 {
+        font-size: 1.4rem !important;
+        margin-bottom: 3px !important;
+    }
+
+    .header-left p {
+        font-size: 0.85rem !important;
+    }
+
+    .header-right {
+        width: 100% !important;
+        justify-content: space-between !important;
+        gap: 15px !important;
+        flex-wrap: wrap !important;
+    }
+
+    .logout-btn {
+        padding: 8px 15px !important;
+        font-size: 0.85rem !important;
+    }
+
+    .notification {
+        font-size: 1.1rem !important;
+    }
+
+    .current-time {
+        font-size: 0.8rem !important;
+        padding: 6px 12px !important;
+        order: -1 !important;
+        width: 100% !important;
+        text-align: center !important;
+    }
+
+    /* Content area */
+    .content-area {
+        padding: 15px !important;
+        width: 100% !important;
+        overflow-x: hidden !important;
+    }
+
+    /* FIX: Deposit and Withdrawal Sections */
+    .deposit-container,
+    .withdrawal-container {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    .deposit-form,
+    .withdrawal-form {
+        padding: 20px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* FIX: Method fields on mobile */
+    .method-fields {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 15px !important;
+        padding: 15px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Ensure form inputs are properly sized */
+    .form-group input,
+    .form-group select {
+        font-size: 16px !important; /* Prevent iOS zoom */
+        min-height: 44px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* FIX: Form rows on mobile */
+    .form-row {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+        width: 100% !important;
+    }
+
+    /* FIX: Buttons on mobile */
+    .btn {
+        padding: 14px 20px !important;
+        font-size: 16px !important;
+        min-height: 44px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* FIX: Dashboard grid */
+    .dashboard-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+        width: 100% !important;
+    }
+
+    .dashboard-card {
+        padding: 15px !important;
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: 15px !important;
+        width: 100% !important;
+    }
+
+    .card-icon {
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 1.5rem !important;
+    }
+
+    .amount {
+        font-size: 1.5rem !important;
+    }
+
+    .trend {
+        font-size: 0.8rem !important;
+    }
+
+    /* FIX: Payment Methods Display */
+    .payment-methods-section {
+        padding: 15px !important;
+        margin-top: 20px !important;
+        width: 100% !important;
+    }
+
+    .methods-display {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+        width: 100% !important;
+    }
+
+    .method-card-display {
+        padding: 15px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* FIX: Modals on mobile */
+    .modal {
+        padding: 0 !important;
+        align-items: flex-end !important;
+        background: rgba(0, 0, 0, 0.7) !important;
+    }
+
+    .modal.active {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    .modal-content {
+        max-width: 100% !important;
+        border-radius: 20px 20px 0 0 !important;
+        padding: 25px 20px !important;
+        max-height: 80vh !important;
+        width: 100% !important;
+        animation: slideUp 0.3s ease !important;
+        margin: 0 !important;
+    }
+
+    @keyframes slideUp {
+        from {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .success-icon i {
+        font-size: 60px !important;
+        color: #4cc9f0 !important;
+    }
+
+    /* FIX: Profile section */
+    .profile-container {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+        width: 100% !important;
+    }
+
+    /* FIX: History section */
+    .history-controls {
+        flex-direction: column !important;
+        gap: 10px !important;
+        width: 100% !important;
+    }
+
+    .filter-group {
+        flex-direction: column !important;
+        width: 100% !important;
+    }
+
+    /* FIX: Partnership section */
+    .partnership-stats {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+        width: 100% !important;
+    }
+
+    /* FIX: Accounts section */
+    .accounts-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+        width: 100% !important;
+    }
+
+    /* FIX: Quick buttons */
+    .quick-buttons {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+    }
+
+    .quick-btn {
+        padding: 12px 8px !important;
+        font-size: 0.9rem !important;
+        min-height: 44px !important;
+    }
+
+    /* Remove hover effects for touch devices */
+    @media (hover: none) and (pointer: coarse) {
+        .btn:hover,
+        .nav-item:hover,
+        .dashboard-card:hover,
+        .quick-btn:hover,
+        .method-card-display:hover {
+            transform: none !important;
+        }
+
+        .btn:active,
+        .nav-item:active,
+        .quick-btn:active {
+            opacity: 0.8 !important;
+            transform: scale(0.98) !important;
+        }
+    }
+
+    /* Prevent text size adjustment */
+    html {
+        -webkit-text-size-adjust: 100% !important;
+    }
+
+    /* Remove tap highlight */
+    * {
+        -webkit-tap-highlight-color: transparent !important;
+    }
+
+    /* Fix for iOS keyboard */
+    .main-content {
+        position: relative !important;
+    }
+
+    /* Ensure modals are above keyboard */
+    .modal {
+        z-index: 99999 !important;
+        position: fixed !important;
+    }
+}
+
+/* FIX 2: Very small screens (320px - 380px) */
+@media screen and (max-width: 380px) {
+    .nav-item span {
+        font-size: 0.6rem !important;
+    }
+
+    .nav-item i {
+        font-size: 0.9rem !important;
+    }
+
+    .btn {
+        padding: 10px 15px !important;
+        font-size: 14px !important;
+    }
+
+    .deposit-form,
+    .withdrawal-form {
+        padding: 15px !important;
+    }
+
+    .method-fields {
+        padding: 12px !important;
+        gap: 12px !important;
+    }
+}
+
+/* FIX 3: Landscape mode */
+@media screen and (max-width: 900px) and (orientation: landscape) {
+    .sidebar {
+        height: 50px !important;
+    }
+
+    .main-content {
+        margin-bottom: 50px !important;
+    }
+
+    .nav-item {
+        padding: 5px 2px !important;
+    }
+
+    .nav-item span {
+        font-size: 0.6rem !important;
+    }
+
+    /* Adjust form layout for landscape */
+    .deposit-container,
+    .withdrawal-container {
+        grid-template-columns: 1fr !important;
+    }
+
+    .method-fields {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* FIX 4: Tablet optimization (768px - 1024px) */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .container {
+        margin: 15px !important;
+    }
+
+    .sidebar {
+        width: 220px !important;
+        position: fixed !important;
+        height: 100vh !important;
+    }
+
+    .main-content {
+        margin-left: 220px !important;
+        margin-bottom: 0 !important;
+        width: calc(100% - 220px) !important;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .deposit-container,
+    .withdrawal-container {
+        grid-template-columns: 1fr !important;
+    }
+
+    .profile-container {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* FIX 5: iOS specific fixes */
+@supports (-webkit-touch-callout: none) {
+    .form-group input,
+    .form-group select {
+        font-size: 16px !important;
+    }
+
+    .modal {
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    /* Fix for sticky hover on iOS */
+    @media (hover: none) {
+        .btn:hover,
+        .nav-item:hover {
+            transform: none !important;
+        }
+    }
+
+    /* Fix for safe areas */
+    .sidebar {
+        padding-bottom: env(safe-area-inset-bottom) !important;
+    }
+
+    .main-content {
+        padding-bottom: env(safe-area-inset-bottom) !important;
+    }
+}
+
+/* FIX 6: Android specific fixes */
+@media screen and (-webkit-min-device-pixel-ratio: 0) and (max-width: 767px) {
+    select,
+    input,
+    button {
+        min-height: 48px !important;
+    }
+
+    .btn {
+        min-height: 48px !important;
+    }
+}
+
+/* FIX 7: Dark mode mobile fixes */
+@media (prefers-color-scheme: dark) and (max-width: 767px) {
+    body {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
+    }
+
+    .container {
+        background: #0f3460 !important;
+    }
+
+    .main-header {
+        background: #0f3460 !important;
+        border-bottom-color: #1a1a2e !important;
+    }
+
+    .header-left h1 {
+        color: #e1e1e1 !important;
+    }
+
+    .header-left p {
+        color: #b0b0b0 !important;
+    }
+    .section-header h2{
+        color: #dbdbdb !important;
+    }
+
+    .deposit-form,
+    .withdrawal-form,
+    .preview-card,
+    .week-breakdown,
+    .method-card-display {
+        background: #1a1a2e !important;
+        color: #dddcdc !important;
+        border-color: #2d4059 !important;
+    }
+    .method-display{
+        color: #141414;
+    }
+
+    .form-group input,
+    .form-group select {
+        background: #0f3460 !important;
+        border-color: #2d4059 !important;
+        color: #e1e1e1 !important;
+    }
+
+    .form-group label {
+        color: #141414 !important;
+    }
+    .form-group2 label{
+        color: #e9e8e8 !important;
+    }
+    
+
+    .modal-content {
+        background: #1a1a2e !important;
+        color: #e1e1e1 !important;
+    }
+
+    .bank-details,
+    .crypto-details {
+        background: #031f41 !important;
+        color: #e0e0e0 !important;
+        border-color: #264063 !important;
+    }
+    .instruction-text{
+        color: #141414;
+    }
+    .instruction-box{
+        color: #141414 !important;
+    }
+    .security-notice{
+        color: #141414 !important;
+    }
+    
+
+}
+
+/* FIX 8: Ensure deposit/withdrawal method switching works on mobile */
+#deposit-method:focus + .method-fields,
+#withdrawal-method:focus + .method-fields {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* FIX 9: Prevent content shifting on mobile */
+.content-section {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* FIX 10: Card payment form mobile fixes */
+#card-fields .form-row {
+    grid-template-columns: 1fr !important;
+    gap: 15px !important;
+}
+
+@media (max-width: 767px) {
+    #card-fields {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 15px !important;
+    }
+    
+    .card-payment-form {
+        padding: 15px !important;
+    }
+    
+    .card-icons {
+        justify-content: center !important;
+    }
+}
+
+/* FIX 11: Make sure success messages are visible */
+@media (max-width: 767px) {
+    .modal-body p {
+        font-size: 16px !important;
+        line-height: 1.4 !important;
+        text-align: center !important;
+    }
+    
+    .success-icon {
+        margin: 15px 0 !important;
+    }
+}
+
+/* FIX 12: Fix select dropdowns on mobile */
+select {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 15px center !important;
+    background-size: 16px !important;
+    padding-right: 45px !important;
+    cursor: pointer !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    select {
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e1e1e1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+    }
+}
+
+/* FIX 13: Ensure all content is within viewport */
+* {
+    max-width: 100%;
+}
+
+/* FIX 14: Improve touch targets for mobile */
+@media (hover: none) and (pointer: coarse) {
+    .btn,
+    .nav-item,
+    .quick-btn,
+    .action-btn {
+        min-height: 44px !important;
+    }
+    
+    .form-group input,
+    .form-group select {
+        min-height: 44px !important;
+    }
+    
+    .transaction-item {
+        min-height: 60px !important;
+    }
+}
+
+/* ======================================== */
+/* CRITICAL FIX: Payment Methods Display Border Radius */
+/* ======================================== */
+
+.methods-display {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    width: 100%;
+    overflow: visible !important;
+}
+
+.method-card-display {
+    background: #f8f9fa;
+    border-radius: var(--border-radius) !important;
+    padding: 20px;
+    border: 1px solid #eaeaea;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+}
+
+/* Ensure ALL corners have border radius */
+.method-card-display::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: var(--border-radius);
+    border: 1px solid transparent;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.method-details-display {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    white-space: pre-wrap;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 10px;
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid #eaeaea;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+/* Fix for mobile */
+@media screen and (max-width: 767px) {
+    .methods-display {
+        grid-template-columns: 1fr !important;
+        gap: 15px;
+        padding: 0 10px;
+        margin: 0 -10px;
+        width: calc(100% + 20px);
+    }
+    
+    .method-card-display {
+        margin: 0;
+        border-radius: var(--border-radius) !important;
+        padding: 15px;
+    }
+    
+    .method-details-display {
+        padding: 12px;
+        font-size: 0.85rem;
+        max-height: 120px;
+    }
+}
+
+/* ======================================== */
+/* FIX for Deposit/Withdrawal Method Fields Visibility */
+/* ======================================== */
+
+/* Clear inline styles on mobile */
+@media screen and (max-width: 767px) {
+    #bank-fields,
+    #crypto-fields,
+    #card-fields,
+    #withdrawal-bank-fields,
+    #withdrawal-crypto-fields {
+        display: none !important;
+        opacity: 0;
+        visibility: hidden;
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    #bank-fields.active,
+    #crypto-fields.active,
+    #card-fields.active,
+    #withdrawal-bank-fields.active,
+    #withdrawal-crypto-fields.active {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        max-height: 1000px !important;
+        overflow: visible !important;
+    }
+}
+
+/* Ensure method fields are visible when active */
+.method-fields.active {
+    display: grid !important;
+    grid-template-columns: 1fr 2fr;
+    gap: 15px;
+    align-items: start;
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border: 1px solid #eaeaea;
+}
+
+/* Mobile layout for method fields */
+@media screen and (max-width: 767px) {
+    .method-fields.active {
+        grid-template-columns: 1fr !important;
+        gap: 12px;
+        padding: 15px;
+    }
+}
+
+
+
+
+/* ======================================== */
+/* NOTIFICATION SYSTEM FIX */
+/* ======================================== */
+
+/* Remove old notification styles */
+.notification-popup {
+    display: none !important;
+}
+
+/* New fixed notification system */
+.notification-system {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 99999;
+    max-width: 350px;
+    width: 100%;
+    pointer-events: none;
+}
+
+.notification-toast {
+    background: white;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    pointer-events: all;
+    animation: slideInRight 0.3s ease forwards;
+    transform: translateX(120%);
+    opacity: 0;
+    border-left: 4px solid var(--primary-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.notification-toast::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--primary-color);
+    opacity: 0.3;
+}
+
+.notification-toast.success {
+    border-left-color: var(--success-color);
+    background: linear-gradient(to right, rgba(76, 201, 240, 0.05), white);
+}
+
+.notification-toast.success::before {
+    background: var(--success-color);
+}
+
+.notification-toast.error {
+    border-left-color: var(--danger-color);
+    background: linear-gradient(to right, rgba(247, 37, 133, 0.05), white);
+}
+
+.notification-toast.error::before {
+    background: var(--danger-color);
+}
+
+.notification-toast.info {
+    border-left-color: var(--primary-color);
+    background: linear-gradient(to right, rgba(67, 97, 238, 0.05), white);
+}
+
+.notification-toast.info::before {
+    background: var(--primary-color);
+}
+
+.notification-toast.warning {
+    border-left-color: var(--warning-color);
+    background: linear-gradient(to right, rgba(255, 158, 0, 0.05), white);
+}
+
+.notification-toast.warning::before {
+    background: var(--warning-color);
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(120%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(120%);
+        opacity: 0;
+    }
+}
+
+.notification-toast.fade-out {
+    animation: slideOutRight 0.3s ease forwards;
+}
+
+.notification-icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: white;
+}
+
+.notification-toast.success .notification-icon {
+    background: var(--success-color);
+}
+
+.notification-toast.error .notification-icon {
+    background: var(--danger-color);
+}
+
+.notification-toast.info .notification-icon {
+    background: var(--primary-color);
+}
+
+.notification-toast.warning .notification-icon {
+    background: var(--warning-color);
+}
+
+.notification-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.notification-content h4 {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0 0 5px 0;
+    color: var(--dark-color);
+}
+
+.notification-content p {
+    font-size: 14px;
+    margin: 0;
+    color: #666;
+    line-height: 1.4;
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    color: #999;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: color 0.3s;
+}
+
+.notification-close:hover {
+    color: var(--danger-color);
+}
+
+/* Progress bar for auto-dismiss */
+.notification-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 0 0 12px 12px;
+    overflow: hidden;
+}
+
+.notification-progress-bar {
+    height: 100%;
+    width: 100%;
+    transform: scaleX(1);
+    transform-origin: left;
+    animation: progressBar 3s linear forwards;
+}
+
+.notification-toast.success .notification-progress-bar {
+    background: var(--success-color);
+}
+
+.notification-toast.error .notification-progress-bar {
+    background: var(--danger-color);
+}
+
+.notification-toast.info .notification-progress-bar {
+    background: var(--primary-color);
+}
+
+.notification-toast.warning .notification-progress-bar {
+    background: var(--warning-color);
+}
+
+@keyframes progressBar {
+    from {
+        transform: scaleX(1);
+    }
+
+    to {
+        transform: scaleX(0);
+    }
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 767px) {
+    .notification-system {
+        top: 15px;
+        right: 15px;
+        left: 15px;
+        max-width: none;
+    }
+
+    .notification-toast {
+        padding: 14px 16px;
+        margin-bottom: 8px;
+    }
+
+    .notification-content h4 {
+        font-size: 14px;
+    }
+
+    .notification-content p {
+        font-size: 13px;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .notification-toast {
+        background: #1a1a2e;
+        color: #e1e1e1;
+        border-left-color: var(--primary-color);
+    }
+
+    .notification-toast.success {
+        background: linear-gradient(to right, rgba(76, 201, 240, 0.1), #1a1a2e);
+    }
+
+    .notification-toast.error {
+        background: linear-gradient(to right, rgba(247, 37, 133, 0.1), #1a1a2e);
+    }
+
+    .notification-toast.info {
+        background: linear-gradient(to right, rgba(67, 97, 238, 0.1), #1a1a2e);
+    }
+
+    .notification-toast.warning {
+        background: linear-gradient(to right, rgba(255, 158, 0, 0.1), #1a1a2e);
+    }
+
+    .notification-content h4 {
+        color: #e1e1e1;
+    }
+
+    .notification-content p {
+        color: #b0b0b0;
+    }
+
+    .notification-close {
+        color: #b0b0b0;
+    }
+
+    .notification-close:hover {
+        color: #f72585;
+    }
+
+    .notification-progress {
+        background: rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* ======================================== */
+/* CRITICAL FIX: Cryptocurrency Field Border Radius */
+/* ======================================== */
+
+/* Fix specifically for cryptocurrency fields */
+#crypto-fields {
+    border-radius: var(--border-radius) !important;
+    overflow: visible !important;
+    position: relative;
+}
+
+/* Fix for crypto details display */
+#crypto-fields .crypto-details {
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    border: 1px solid #eaeaea;
+    background: white;
+    padding: 15px;
+    margin-top: 15px;
+}
+
+/* Fix for instruction box in crypto fields */
+#crypto-fields .instruction-box {
+    border-radius: 10px !important;
+    overflow: hidden !important;
+    margin-top: 15px;
+}
+
+/* Fix for individual form groups in crypto fields */
+#crypto-fields .form-group input,
+#crypto-fields .form-group select {
+    border-radius: 8px !important;
+}
+
+/* Force right border radius on mobile */
+@media screen and (max-width: 767px) {
+    #crypto-fields {
+        border-radius: var(--border-radius) !important;
+        overflow: hidden !important;
+    }
+    
+    #crypto-fields::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        border-radius: var(--border-radius);
+        box-shadow: inset 0 0 0 1px #eaeaea;
+        pointer-events: none;
+        z-index: 1;
+    }
+    
+    #crypto-fields .crypto-details {
+        border-radius: 8px !important;
+        margin: 10px 0;
+    }
+    
+    #crypto-fields .form-group input,
+    #crypto-fields .form-group select {
+        border-radius: 8px !important;
+        border: 2px solid #eaeaea;
+    }
+}
+
+/* Ensure all children of crypto fields have proper border radius */
+#crypto-fields > * {
+    border-radius: inherit !important;
+}
+
+/* Fix for the main container */
+#crypto-fields.method-fields {
+    border-radius: var(--border-radius) !important;
+    border: 1px solid #eaeaea !important;
+}
+
+/* Force border radius on all sides */
+#crypto-fields {
+    border-top-left-radius: var(--border-radius) !important;
+    border-top-right-radius: var(--border-radius) !important;
+    border-bottom-left-radius: var(--border-radius) !important;
+    border-bottom-right-radius: var(--border-radius) !important;
+}
+
+/* Fix for dark mode */
+@media (prefers-color-scheme: dark) {
+    #crypto-fields {
+        border-color: #2d4059 !important;
+    }
+    
+    #crypto-fields .crypto-details {
+        background: #1a1a2e !important;
+        border-color: #2d4059 !important;
+        color: #e1e1e1 !important;
+    }
+    
+    #crypto-fields .instruction-box {
+        background: rgba(76, 201, 240, 0.15) !important;
+        border-left-color: #4cc9f0 !important;
+    }
+    
+    #crypto-fields .form-group input,
+    #crypto-fields .form-group select {
+        background: #0f3460 !important;
+        border-color: #2d4059 !important;
+        color: #e1e1e1 !important;
+    }
+}
+
+
+
+/* ======================================== */
+/* FIX: Checkbox Label Margin Issue */
+/* ======================================== */
+
+.checkbox-label {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    cursor: pointer !important;
+    font-size: 0.9rem !important;
+    color: #666 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: fit-content !important;
+    max-width: 100% !important;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px !important;
+    min-height: 16px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    cursor: pointer !important;
+    flex-shrink: 0 !important;
+}
+
+.checkbox-label span {
+    margin: 0 !important;
+    padding: 0 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    flex-shrink: 1 !important;
+}
+
+/* Mobile fix for checkbox */
+@media screen and (max-width: 767px) {
+    .checkbox-label {
+        gap: 6px !important;
+        font-size: 0.85rem !important;
+        width: 100% !important;
+    }
+    
+    .checkbox-label span {
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+    }
+}
+
+/* Fix specifically for the save card checkbox */
+#card-fields .checkbox-label {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+}
+
+/* Dark mode fix */
+@media (prefers-color-scheme: dark) {
+    .checkbox-label {
+        color: #b0b0b0 !important;
+    }
+}
+
+
+
+/* ======================================== */
+/* FIX: Payment Methods Display Font Color in Dark Mode */
+/* ======================================== */
+
+@media (prefers-color-scheme: dark) {
+    /* Fix for the method details display text color */
+    .method-details-display {
+        color: #e1e1e1 !important;
+        background: #1a1a2e !important;
+        border-color: #2d4059 !important;
+    }
+    
+    /* Fix for pre/code elements inside method details */
+    .method-details-display pre,
+    .method-details-display code {
+        color: #e1e1e1 !important;
+    }
+    
+    /* Ensure all text inside the method card is visible */
+    .method-card-display h4,
+    .method-card-display h4 i {
+        color: #e1e1e1 !important;
+    }
+    
+    .method-card-display h4 i {
+        color: #4cc9f0 !important;
+    }
+    
+    /* Fix loading text color */
+    .loading-methods,
+    .no-methods {
+        color: #b0b0b0 !important;
+    }
+    
+    /* Fix section text colors */
+    .payment-methods-section h2 {
+        color: #0e0d0d !important;
+    }
+    
+    .payment-methods-section p {
+        color: #110f0f !important;
+    }
+}
+
+/* If you're using a dark mode class instead of prefers-color-scheme */
+body.dark-mode .method-details-display,
+body.dark-mode .method-details-display pre,
+body.dark-mode .method-details-display code {
+    color: #e1e1e1 !important;
+}
+
+
+
+
+
+/* ======================================== */
+/* FIX: Bank/Crypto Details Border Radius After Selection */
+/* ======================================== */
+
+/* Fix for the details containers that appear after selection */
+.bank-details,
+.crypto-details {
+    border-radius: 8px !important;
+    border: 1px solid #eaeaea !important;
+    background: white !important;
+    padding: 15px !important;
+    margin-top: 15px !important;
+    overflow: hidden !important;
+    position: relative !important;
+}
+
+/* Ensure pre tags inside details have proper border radius */
+.bank-details pre,
+.crypto-details pre {
+    border-radius: 6px !important;
+    padding: 10px !important;
+    margin: 0 !important;
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    overflow: auto !important;
+    background: transparent !important;
+}
+
+/* Create a wrapper to enforce border radius */
+.bank-details::before,
+.crypto-details::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 8px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Fix for dark mode */
+@media (prefers-color-scheme: dark) {
+    .bank-details,
+    .crypto-details {
+        background: #1a1a2e !important;
+        border-color: #2d4059 !important;
+        color: #e1e1e1 !important;
+    }
+    
+    .bank-details pre,
+    .crypto-details pre {
+        color: #e1e1e1 !important;
+        background: transparent !important;
+    }
+}
+
+/* ======================================== */
+/* CRITICAL FIX: Parent Container Overflow */
+/* ======================================== */
+
+/* This is the main fix - prevent parent from cutting children */
+#crypto-fields.active,
+#bank-fields.active {
+    overflow: visible !important;
+    position: relative;
+}
+
+/* Force the details containers to stay within bounds */
+#crypto-fields.active .crypto-details,
+#bank-fields.active .bank-details {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Mobile-specific fix */
+@media screen and (max-width: 767px) {
+    .bank-details,
+    .crypto-details {
+        border-radius: 8px !important;
+        margin: 10px 0 !important;
+        padding: 12px !important;
+    }
+    
+    /* Ensure details don't overflow on mobile */
+    #crypto-fields.active,
+    #bank-fields.active {
+        padding-right: 0 !important;
+        padding-left: 0 !important;
+    }
+    
+    #crypto-fields.active .crypto-details,
+    #bank-fields.active .bank-details {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+/* ======================================== */
+/* FIX: Text Overflow in Details */
+/* ======================================== */
+
+/* Prevent long text from breaking layout */
+.bank-details pre,
+.crypto-details pre {
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+}
+
+/* Ensure the pre tag respects container bounds */
+.bank-details pre {
+    max-width: 100% !important;
+    display: block !important;
+}
+
+/* ======================================== */
+/* FIX: Final Border Radius Enforcement */
+/* ======================================== */
+
+/* This ensures the entire details section maintains radius */
+.bank-details *,
+.crypto-details * {
+    border-radius: inherit !important;
+}
+
+/* Force right border radius specifically */
+.bank-details,
+.crypto-details {
+    border-top-right-radius: 8px !important;
+    border-bottom-right-radius: 8px !important;
+    border-top-left-radius: 8px !important;
+    border-bottom-left-radius: 8px !important;
+}
+
+
+
+
+
+
+
+/* ======================================== */
+/* TARGETED iOS FIX - Bottom Navigation Stays Fixed */
+/* ======================================== */
+
+/* iOS Safari specific fix - DOES NOT affect Android */
+@supports (-webkit-touch-callout: none) {
+    /* Fix 1: Prevent address bar from affecting layout */
+    html {
+        height: -webkit-fill-available;
+        height: fill-available;
+    }
+    
+    body {
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
+        min-height: fill-available;
+        overflow-x: hidden;
+    }
+    
+    /* Fix 2: Adjust container for iOS */
+    .container {
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
+        min-height: fill-available;
+    }
+    
+    /* Fix 3: Bottom navigation stays fixed */
+    .sidebar {
+        position: sticky !important;
+        bottom: 0 !important;
+        position: -webkit-sticky !important;
+        top: auto !important;
+        z-index: 1000 !important;
+    }
+    
+    /* Fix 4: Main content area */
+    .main-content {
+        position: relative;
+        z-index: 1;
+    }
+    
+    /* Fix 5: Prevent elastic scrolling from moving nav */
+    .sidebar {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+    }
+}
+
+/* ======================================== */
+/* iOS 15+ Specific Fix (for newer iPhones) */
+/* ======================================== */
+
+@supports (-webkit-touch-callout: none) and (padding: max(0px)) {
+    .sidebar {
+        padding-bottom: max(10px, env(safe-area-inset-bottom)) !important;
+        height: calc(60px + env(safe-area-inset-bottom)) !important;
+    }
+    
+    .nav-menu ul {
+        padding-bottom: env(safe-area-inset-bottom) !important;
+    }
+    
+    .main-content {
+        margin-bottom: calc(60px + env(safe-area-inset-bottom)) !important;
+    }
+}
+
+/* ======================================== */
+/* iOS Safari 100vh Fix - Critical for mobile */
+/* ======================================== */
+
+/* Fix for iOS Safari 100vh issue */
+@supports (-webkit-touch-callout: none) {
+    .container {
+        height: 100vh;
+        height: -webkit-fill-available;
+    }
+    
+    .main-content {
+        height: calc(100vh - 60px - env(safe-area-inset-bottom));
+        height: calc(-webkit-fill-available - 60px - env(safe-area-inset-bottom));
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .content-area {
+        min-height: calc(100vh - 120px - env(safe-area-inset-bottom));
+        min-height: calc(-webkit-fill-available - 120px - env(safe-area-inset-bottom));
+    }
+}
+
+/* ======================================== */
+/* Alternative iOS Fix Using Viewport Units */
+/* ======================================== */
+
+@supports (-webkit-touch-callout: none) {
+    /* Use dvh (dynamic viewport height) if supported */
+    @supports (height: 100dvh) {
+        .container {
+            height: 100dvh;
+        }
+        
+        .main-content {
+            height: calc(100dvh - 60px - env(safe-area-inset-bottom));
+        }
+    }
+    
+    /* Fallback for older iOS */
+    @supports not (height: 100dvh) {
+        .container {
+            height: 100%;
+        }
+        
+        .main-content {
+            height: auto;
+            flex: 1;
+        }
+    }
+}
+
+/* ======================================== */
+/* Final iOS Fix - Most Reliable Approach */
+/* ======================================== */
+
+/* This approach works on all iOS versions */
+@supports (-webkit-touch-callout: none) and (max-width: 767px) {
+    /* Reset any problematic mobile styles */
+    .sidebar {
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 60px !important;
+        padding-bottom: env(safe-area-inset-bottom) !important;
+        z-index: 1000 !important;
+        transform: translate3d(0, 0, 0) !important;
+        -webkit-transform: translate3d(0, 0, 0) !important;
+        will-change: transform !important;
+    }
+    
+    /* Lock the navigation in place */
+    .sidebar {
+        backface-visibility: hidden !important;
+        -webkit-backface-visibility: hidden !important;
+        perspective: 1000 !important;
+        -webkit-perspective: 1000 !important;
+    }
+    
+    /* Adjust main content to account for fixed nav */
+    .main-content {
+        margin-bottom: 0 !important;
+        padding-bottom: calc(60px + env(safe-area-inset-bottom)) !important;
+        height: 100vh !important;
+        height: -webkit-fill-available !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+    
+    /* Ensure content area is scrollable */
+    .content-area {
+        min-height: calc(100vh - 120px) !important;
+        min-height: calc(-webkit-fill-available - 120px) !important;
+        padding-bottom: 20px !important;
+    }
+    
+    /* Make nav items touch-friendly */
+    .nav-item {
+        min-height: 60px !important;
+        padding: 10px 5px !important;
+    }
+    
+    /* Prevent any animations that might cause issues */
+    .sidebar,
+    .nav-item {
+        transition: none !important;
+        -webkit-transition: none !important;
+    }
+}
+
+/* ======================================== */
+/* iOS Keyboard Fix (Prevent nav from moving) */
+/* ======================================== */
+
+/* Prevent navigation from moving when keyboard appears */
+@supports (-webkit-touch-callout: none) {
+    .sidebar {
+        position: fixed !important;
+        bottom: env(safe-area-inset-bottom) !important;
+        left: 0 !important;
+        right: 0 !important;
+    }
+    
+    /* When virtual keyboard is open */
+    body.keyboard-open .sidebar {
+        transform: translateY(0) !important;
+        -webkit-transform: translateY(0) !important;
+    }
+    
+    /* Adjust content when keyboard is open */
+    body.keyboard-open .main-content {
+        padding-bottom: calc(60px + env(safe-area-inset-bottom) + 300px) !important;
+    }
+
+
+}
+
+
+
+
+
+
+
+
+/* ======================================== */
+/* FIX: iOS Button Height & Screen Space Optimization */
+/* ======================================== */
+
+@supports (-webkit-touch-callout: none) and (max-width: 767px) {
+    /* Reduce navigation height for more screen space */
+    .sidebar {
+        height: 55px !important; /* Reduced from 60px */
+        min-height: 55px !important;
+        padding-bottom: env(safe-area-inset-bottom) !important;
+    }
+    
+    /* Adjust nav items to be more compact */
+    .nav-item {
+        min-height: 55px !important;
+        height: 55px !important;
+        padding: 5px 3px !important;
+        margin: 0 !important;
+    }
+    
+    /* Make icons and text smaller */
+    .nav-item i {
+        font-size: 1rem !important;
+        margin-bottom: 1px !important;
+    }
+    
+    .nav-item span {
+        font-size: 0.65rem !important;
+        line-height: 1 !important;
+        margin-top: 2px !important;
+    }
+    
+    /* Adjust main content to match */
+    .main-content {
+        margin-bottom: 55px !important;
+        height: calc(100vh - 55px - env(safe-area-inset-bottom)) !important;
+    }
+    
+    /* Increase content area height */
+    .content-area {
+        height: calc(100vh - 150px) !important;
+        min-height: calc(100vh - 150px) !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+}
+
+/* ======================================== */
+/* Alternative: Even More Compact Navigation */
+/* ======================================== */
+
+/* If you want even more screen space */
+@supports (-webkit-touch-callout: none) and (max-width: 767px) {
+    .sidebar.compact {
+        height: 50px !important;
+    }
+    
+    .sidebar.compact .nav-item {
+        min-height: 50px !important;
+        padding: 4px 2px !important;
+    }
+    
+    .sidebar.compact .nav-item i {
+        font-size: 0.9rem !important;
+    }
+    
+    .sidebar.compact .nav-item span {
+        font-size: 0.6rem !important;
+    }
+    
+    .sidebar.compact ~ .main-content {
+        margin-bottom: 50px !important;
+        height: calc(100vh - 50px - env(safe-area-inset-bottom)) !important;
+    }
+}
+
+/* ======================================== */
+/* OPTIMIZATION: Give More Content Space */
+/* ======================================== */
+
+@supports (-webkit-touch-callout: none) and (max-width: 767px) {
+    /* Reduce header padding */
+    .main-header {
+        padding: 12px 15px !important;
+        min-height: auto !important;
+    }
+    
+    .header-left h1 {
+        font-size: 1.3rem !important;
+        margin-bottom: 2px !important;
+    }
+    
+    .header-left p {
+        font-size: 0.8rem !important;
+    }
+    
+    /* Reduce content area padding */
+    .content-area {
+        padding: 12px 15px !important;
+    }
+    
+    /* Make dashboard cards more compact */
+    .dashboard-card {
+        padding: 15px !important;
+        margin-bottom: 10px !important;
+    }
+    
+    .card-icon {
+        width: 45px !important;
+        height: 45px !important;
+        font-size: 1.5rem !important;
+    }
+    
+    .amount {
+        font-size: 1.6rem !important;
+    }
+    
+    .trend {
+        font-size: 0.75rem !important;
+        padding: 2px 8px !important;
+    }
+}
+
+/* ======================================== */
+/* SPECIFIC FIX: For iPhone SE/12mini etc */
+/* ======================================== */
+
+/* Extra small iPhones */
+@media screen and (max-width: 375px) and (-webkit-touch-callout: none) {
+    .sidebar {
+        height: 52px !important;
+    }
+    
+    .nav-item {
+        min-height: 52px !important;
+        padding: 4px 2px !important;
+    }
+    
+    .nav-item i {
+        font-size: 0.95rem !important;
+    }
+    
+    .nav-item span {
+        font-size: 0.6rem !important;
+    }
+    
+    .main-content {
+        margin-bottom: 52px !important;
+        height: calc(100vh - 52px - env(safe-area-inset-bottom)) !important;
+    }
+}
+
+/* ======================================== */
+/* BONUS: Increase Touch Area Without Height */
+/* ======================================== */
+
+/* Make buttons easier to tap without increasing height */
+@supports (-webkit-touch-callout: none) and (max-width: 767px) {
+    .nav-item {
+        position: relative;
+    }
+    
+    /* Invisible touch area extension */
+    .nav-item::after {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: -5px;
+        right: -5px;
+        bottom: -10px;
+        z-index: -1;
+    }
+    
+    /* Active state feedback */
+    .nav-item:active {
+        opacity: 0.7;
+        transform: scale(0.95);
+    }
+}

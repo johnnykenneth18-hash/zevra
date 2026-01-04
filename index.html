@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZEVRA | Premium Investment Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./CSS/main.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <i class="fas fa-university"></i>
+                <h1>ZEVRA</h1>
+            </div>
+
+            <div class="nav-menu" id="navMenu">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#invest" class="nav-link">Invest</a>
+                <a href="#plans" class="nav-link">Plans</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#testimonials" class="nav-link">Testimonials</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+
+            <div class="nav-actions">
+                <button class="btn btn-outline" id="loginBtn">Sign In</button>
+                <button class="btn btn-primary" id="signupBtn">Sign up</button>
+                <button class="nav-toggle" id="navToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <span class="hero-badge">
+                        <i class="fas fa-rocket"></i> 50% Weekly Returns
+                    </span>
+                    <h1>Grow Your Wealth with <span class="highlight">Smart Investing</span></h1>
+                    <p class="hero-subtitle">AUTHORIZED BY THE US MILITARY OPERATIONS COUNCIL <br>Join thousands of
+                        investors earning up to 50% weekly returns on their
+                        investments. Secure, transparent, and profitable.</p>
+
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <h3>$25M+</h3>
+                            <p>Total Investments</p>
+                        </div>
+                        <div class="stat">
+                            <h3>12,500+</h3>
+                            <p>Active Investors</p>
+                        </div>
+                        <div class="stat">
+                            <h3>50%</h3>
+                            <p>Weekly Returns</p>
+                        </div>
+                        <div class="stat">
+                            <h3>24/7</h3>
+                            <p>Support Available</p>
+                        </div>
+                    </div>
+
+                    <div class="hero-actions">
+                        <button class="btn btn-primary btn-lg" id="startInvesting">
+                            <i class="fas fa-chart-line"></i> Start Investing
+                        </button>
+                        <button class="btn btn-outline btn-lg" id="watchDemo">
+                            <i class="fas fa-play-circle"></i> Watch Demo
+                        </button>
+                    </div>
+                </div>
+
+                <div class="hero-image">
+                    <div class="investment-card">
+                        <div class="card-header">
+                            <h3>Investment Calculator</h3>
+                            <p>See your potential returns</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="calc-input">
+                                <label>Investment Amount</label>
+                                <div class="input-group">
+                                    <span>$</span>
+                                    <input type="number" id="calcAmount" value="1000" min="100" step="100">
+                                </div>
+                            </div>
+
+                            <div class="calc-input">
+                                <label>Investment Period</label>
+                                <div class="range-slider">
+                                    <input type="range" id="calcPeriod" min="1" max="12" value="4">
+                                    <div class="range-labels">
+                                        <span>1 Week</span>
+                                        <span id="selectedPeriod">4 Weeks</span>
+                                        <span>12 Weeks</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="calc-results">
+                                <div class="result-item">
+                                    <span>Your Investment</span>
+                                    <strong id="calcInvestment">$1,000</strong>
+                                </div>
+                                <div class="result-item">
+                                    <span>Total Returns</span>
+                                    <strong id="calcReturns">$2,000</strong>
+                                </div>
+                                <div class="result-item total">
+                                    <span>Final Amount</span>
+                                    <strong id="calcTotal">$3,000</strong>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary btn-block">
+                                <i class="fas fa-calculator"></i> Calculate More
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section about" id="about">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">About Us</span>
+                <h2>Trusted by Investors Worldwide</h2>
+                <p>We provide secure investment opportunities with industry-leading returns</p>
+            </div>
+
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="coin-rising-image.jpg" alt="Investment Analytics">
+                    <div class="experience-badge">
+                        <span>5+</span>
+                        <p>Years Experience</p>
+                    </div>
+                </div>
+
+                <div class="about-text">
+                    <h3>Why Choose Zevra?</h3>
+                    <p>Zevra is a premier investment platform that combines cutting-edge technology with proven
+                        investment strategies to deliver consistent, high returns for our clients.</p>
+
+                    <div class="features-list">
+                        <div class="feature">
+                            <div class="feature-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>Secure & Regulated</h4>
+                                <p>Bank-level security and regulatory compliance ensure your investments are protected.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="feature">
+                            <div class="feature-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>High Returns</h4>
+                                <p>Earn up to 50% weekly returns through our diversified investment portfolio.</p>
+                            </div>
+                        </div>
+
+                        <div class="feature">
+                            <div class="feature-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>24/7 Access</h4>
+                                <p>Monitor and manage your investments anytime, anywhere through our platform.</p>
+                            </div>
+                        </div>
+
+                        <div class="feature">
+                            <div class="feature-icon">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>Expert Support</h4>
+                                <p>Dedicated investment advisors available to help you maximize your returns.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" id="aboutUsBtn">
+                        <i class="fas fa-book"></i> Learn More About Us
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment Plans Section -->
+    <section class="section plans" id="plans">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Investment Plans</span>
+                <h2>Choose Your Investment Strategy</h2>
+                <p>Select from our range of investment plans tailored to different goals and risk profiles</p>
+            </div>
+
+            <div class="plans-grid">
+                <!-- Basic Plan -->
+                <div class="plan-card">
+                    <div class="plan-header">
+                        <h3>Starter Plan</h3>
+                        <div class="plan-price">
+                            <span class="currency">$</span>
+                            <span class="amount">100</span>
+                            <span class="period">Min Deposit</span>
+                        </div>
+                        <p class="plan-description">Perfect for beginners starting their investment journey</p>
+                    </div>
+
+                    <div class="plan-features">
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Weekly Returns: 30%</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Min Investment: $100</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Max Investment: $10,000</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Withdrawal Anytime</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>24/7 Support</span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-outline btn-block plan-select">
+                        Select Starter Plan
+                    </button>
+                </div>
+
+                <!-- Premium Plan (Recommended) -->
+                <div class="plan-card featured">
+                    <div class="plan-badge">Most Popular</div>
+                    <div class="plan-header">
+                        <h3>Premium Plan</h3>
+                        <div class="plan-price">
+                            <span class="currency">$</span>
+                            <span class="amount">1,000</span>
+                            <span class="period">Min Deposit</span>
+                        </div>
+                        <p class="plan-description">Optimal balance of risk and return for serious investors</p>
+                    </div>
+
+                    <div class="plan-features">
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Weekly Returns: 50%</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Min Investment: $1,000</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Max Investment: $500,000</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Compound Interest</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Priority Support</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Weekly Reports</span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary btn-block plan-select">
+                        Select Premium Plan
+                    </button>
+                </div>
+
+                <!-- VIP Plan -->
+                <div class="plan-card">
+                    <div class="plan-header">
+                        <h3>VIP Plan</h3>
+                        <div class="plan-price">
+                            <span class="currency">$</span>
+                            <span class="amount">5,000</span>
+                            <span class="period">Min Deposit</span>
+                        </div>
+                        <p class="plan-description">Maximum returns for high-net-worth investors</p>
+                    </div>
+
+                    <div class="plan-features">
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Weekly Returns: 75%</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Min Investment: $5,000</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Max Investment: $1,000,000</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Daily Compounding</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Personal Advisor</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Exclusive Features</span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-outline btn-block plan-select">
+                        Select VIP Plan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="section process" id="invest">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">How It Works</span>
+                <h2>Start Investing in 4 Easy Steps</h2>
+                <p>Get started with your investment journey in minutes</p>
+            </div>
+
+            <div class="process-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <h3>Create Account</h3>
+                        <p>Sign up for free and verify your identity</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-icon">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <h3>Make Deposit</h3>
+                        <p>Choose your plan and make your first deposit</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Start Earning</h3>
+                        <p>Watch your investment grow with daily returns</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <h3>Withdraw Profits</h3>
+                        <p>Withdraw your earnings anytime you want</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Platform Features</span>
+                <h2>Everything You Need to Succeed</h2>
+                <p>Our platform is packed with features designed to maximize your investment experience</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Mobile App</h3>
+                    <p>Manage your investments on the go with our iOS and Android apps</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3>Advanced Analytics</h3>
+                    <p>Real-time performance tracking and detailed investment analytics</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Bank-Level Security</h3>
+                    <p>256-bit SSL encryption and multi-factor authentication</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>Partnership Program</h3>
+                    <p>Earn commissions by referring friends to our platform</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                    </div>
+                    <h3>Tax Reports</h3>
+                    <p>Automated tax reporting and documentation for your investments</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <h3>Auto-Invest</h3>
+                    <p>Set up automatic investments and reinvestment of profits</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Testimonials</span>
+                <h2>What Our Investors Say</h2>
+                <p>Hear from thousands of satisfied investors worldwide</p>
+            </div>
+
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User"
+                            onerror="this.onerror=null; this.src='randomMen.jpg';">
+                        <div class="user-info">
+                            <h4>Daniel Morrison</h4>
+                            <span>Investor for 2 years</span>
+                        </div>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"I've tried several investment platforms, but ZEVRA stands out. The 50%
+                        weekly returns are real, and withdrawals are processed within hours. Highly recommended!"</p>
+                    <div class="testimonial-meta">
+                        <span><i class="fas fa-calendar"></i> March 15, 2024</span>
+                        <span><i class="fas fa-chart-line"></i> $15,200 earned</span>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User"
+                            onerror="this.onerror=null; this.src='randomWomen.jpg';">
+                        <div class="user-info">
+                            <h4>Sarah whitfield</h4>
+                            <span>Investor for 1 year</span>
+                        </div>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"As a beginner, I was nervous about investing. The team at ZEVRA guided
+                        me through everything. Now I'm earning consistent returns. The platform is incredibly
+                        user-friendly!"</p>
+                    <div class="testimonial-meta">
+                        <span><i class="fas fa-calendar"></i> February 28, 2024</span>
+                        <span><i class="fas fa-chart-line"></i> $8,500 earned</span>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="User"
+                            onerror="this.onerror=null; this.src='randomMen2.jpg';">
+                        <div class="user-info">
+                            <h4>David Collins</h4>
+                            <span>Investor for 3 years</span>
+                        </div>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"The partnership program is fantastic. I've earned over $5,000 just by
+                        referring friends. Combined with my investment returns, this platform has significantly boosted
+                        my income."</p>
+                    <div class="testimonial-meta">
+                        <span><i class="fas fa-calendar"></i> January 10, 2024</span>
+                        <span><i class="fas fa-chart-line"></i> $22,300 earned</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section faq">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">FAQ</span>
+                <h2>Frequently Asked Questions</h2>
+                <p>Get answers to common questions about our investment platform</p>
+            </div>
+
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>How do I start investing?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Simply sign up for an account, complete the verification process, choose an investment plan,
+                            and make your first deposit. You can start with as little as $100.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Are the 50% weekly returns guaranteed?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>While past performance is not a guarantee of future results, our investment strategies have
+                            consistently delivered 30-50% weekly returns for over 5 years. We employ risk management
+                            strategies to maintain stable returns.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>How quickly can I withdraw my money?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Withdrawals are processed within 2-24 hours, depending on the withdrawal method. There are no
+                            lock-in periods - you can withdraw your funds anytime.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Is my investment secure?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, we use bank-level 256-bit SSL encryption, two-factor authentication, and store funds in
+                            segregated accounts. We're also registered and compliant with financial regulations.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>What is the partnership program?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our partnership program allows you to earn 15% commission on deposits made by people you
+                            refer to ZEVRA. There's no limit to how much you can earn through referrals.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Are there any hidden fees?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>No hidden fees. We only charge a 2% withdrawal fee to cover processing costs. All other
+                            features, including deposits and account management, are completely free.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Start Your Investment Journey?</h2>
+                <p>Join over 12,500 investors who are growing their wealth with Zevra. Start with just $100 and
+                    experience the power of smart investing.</p>
+
+                <div class="cta-actions">
+                    <button class="btn btn-primary btn-lg" id="ctaSignup">
+                        <i class="fas fa-user-plus"></i> Sign Up Free
+                    </button>
+                    <button class="btn btn-outline btn-lg" id="ctaSchedule">
+                        <i class="fas fa-calendar"></i> Schedule a Demo
+                    </button>
+                </div>
+
+                <div class="cta-features">
+                    <div class="feature">
+                        <i class="fas fa-lock"></i>
+                        <span>Secure Platform</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-clock"></i>
+                        <span>24/7 Support</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Mobile App</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-chart-line"></i>
+                        <span>50% Weekly Returns</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-brand">
+                        <i class="fas fa-university"></i>
+                        <h3>ZEVRA</h3>
+                    </div>
+                    <p class="footer-description">Premium investment platform delivering consistent high returns through
+                        diversified investment strategies.</p>
+
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Platform</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="aboutUs.html">About Us</a></li>
+                        <li><a href="#plans">Investment Plans</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#testimonials">Testimonials</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Investment Guide</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Support Center</a></li>
+                        <li><a href="#">API Documentation</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="terms-of-service.html">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">Risk Disclosure</a></li>
+                        <li><a href="#">Compliance</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Contact Us</h4>
+                    <div class="contact-info">
+                        <p><i class="fas fa-envelope"></i> support@zevra.com</p>
+                        <p><i class="fas fa-phone"></i> +1 (555) 537-6239</p>
+                        <p><i class="fas fa-map-marker-alt"></i> 226 Investment Street, Financial District, NY 10005</p>
+                    </div>
+
+                    <div class="newsletter">
+                        <h5>Stay Updated</h5>
+                        <div class="newsletter-form">
+                            <input type="email" placeholder="Your email address">
+                            <button type="submit">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 ZEVRA Investment Platform. All rights reserved.</p>
+                <div class="payment-methods">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-amex"></i>
+                    <i class="fab fa-bitcoin"></i>
+                    <i class="fab fa-paypal"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="./JAVASCRIPT/main.js"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="./JAVASCRIPT/supabase-local.js"></script>
+
+
+    <!-- ======================================== -->
+    <!-- PROFESSIONAL TRANSLATION INTERFACE -->
+    <!-- (Uses Browser Translation Without Layout Issues) -->
+    <!-- ======================================== -->
+    <div class="translation-wrapper">
+        <!-- Floating Translate Button -->
+        <button class="translate-floating-btn" id="translateFloatingBtn">
+            <i class="fas fa-language"></i>
+            <span class="btn-text">🌍 Translate</span>
+        </button>
+
+        <!-- Translation Panel (Hidden by default) -->
+        <div class="translation-panel" id="translationPanel">
+            <div class="panel-header">
+                <h4><i class="fas fa-globe-americas"></i> Website Translation</h4>
+                <button class="panel-close" id="panelClose">&times;</button>
+            </div>
+
+            <div class="panel-content">
+                <div class="translation-method browser-method">
+                    <div class="method-icon">
+                        <i class="fas fa-browser"></i>
+                    </div>
+                    <div class="method-content">
+                        <h5>Browser Translation (Recommended)</h5>
+                        <p>Use your browser's built-in translator for perfect results:</p>
+
+                        <div class="browser-instructions">
+                            <div class="instruction">
+                                <i class="fab fa-chrome"></i>
+                                <div>
+                                    <strong>Google Chrome / Microsoft Edge:</strong>
+                                    <p>Right-click anywhere on page → <em>"Translate to [Language]"</em></p>
+                                </div>
+                            </div>
+
+                            <div class="instruction">
+                                <i class="fab fa-firefox"></i>
+                                <div>
+                                    <strong>Mozilla Firefox:</strong>
+                                    <p>Click the translate icon <i class="fas fa-language"></i> in address bar</p>
+                                </div>
+                            </div>
+
+                            <div class="instruction">
+                                <i class="fab fa-safari"></i>
+                                <div>
+                                    <strong>Apple Safari:</strong>
+                                    <p>Settings → Advanced → <em>"Never translate [language]"</em></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="translation-tip">
+                            <i class="fas fa-lightbulb"></i>
+                            <span><strong>Tip:</strong> Banking terms may appear in English for accuracy</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="translation-method manual-method">
+                    <div class="method-icon">
+                        <i class="fas fa-list"></i>
+                    </div>
+                    <div class="method-content">
+                        <h5>Quick Language Selection</h5>
+                        <p>Copy and paste this URL into Google Translate:</p>
+
+                        <div class="translate-url">
+                            <input type="text" readonly value="https://zevra-investments.com" id="translateUrl">
+                            <button class="copy-url-btn" id="copyUrlBtn">
+                                <i class="far fa-copy"></i> Copy
+                            </button>
+                        </div>
+
+                        <div class="language-buttons">
+                            <p>Common languages:</p>
+                            <div class="lang-btns-grid">
+                                <button class="lang-btn" data-lang="es">Español</button>
+                                <button class="lang-btn" data-lang="fr">Français</button>
+                                <button class="lang-btn" data-lang="de">Deutsch</button>
+                                <button class="lang-btn" data-lang="pt">Português</button>
+                                <button class="lang-btn" data-lang="ru">Русский</button>
+                                <button class="lang-btn" data-lang="zh">中文</button>
+                                <button class="lang-btn" data-lang="ar">العربية</button>
+                                <button class="lang-btn" data-lang="ja">日本語</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-footer">
+                <button class="dismiss-btn" id="dismissTranslation">
+                    <i class="far fa-bell-slash"></i> Don't show again
+                </button>
+                <div class="translation-note">
+                    <i class="fas fa-info-circle"></i>
+                    <small>Translation preserves banking terms for accuracy</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========================================
+        // TRANSLATION PANEL CONTROLLER
+        // ========================================
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const floatingBtn = document.getElementById('translateFloatingBtn');
+            const translationPanel = document.getElementById('translationPanel');
+            const panelClose = document.getElementById('panelClose');
+            const copyUrlBtn = document.getElementById('copyUrlBtn');
+            const dismissBtn = document.getElementById('dismissTranslation');
+            const translateUrl = document.getElementById('translateUrl');
+            const langButtons = document.querySelectorAll('.lang-btn');
+
+            // Set current URL
+            if (translateUrl) {
+                translateUrl.value = window.location.href;
+            }
+
+            // Auto-show panel for non-English users (once per session)
+            const userLang = navigator.language || navigator.userLanguage;
+            const primaryLang = userLang.split('-')[0];
+
+            if (primaryLang !== 'en' &&
+                !sessionStorage.getItem('translation_shown') &&
+                !localStorage.getItem('translation_disabled')) {
+
+                setTimeout(() => {
+                    showTranslationPanel();
+                    sessionStorage.setItem('translation_shown', 'true');
+                }, 2000);
+            }
+
+            // Toggle panel with floating button
+            if (floatingBtn && translationPanel) {
+                floatingBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    if (translationPanel.classList.contains('show')) {
+                        hideTranslationPanel();
+                    } else {
+                        showTranslationPanel();
+                    }
+                });
+            }
+
+            // Close panel
+            if (panelClose) {
+                panelClose.addEventListener('click', hideTranslationPanel);
+            }
+
+            // Close panel when clicking outside
+            document.addEventListener('click', function (event) {
+                if (!translationPanel.contains(event.target) &&
+                    !floatingBtn.contains(event.target) &&
+                    translationPanel.classList.contains('show')) {
+                    hideTranslationPanel();
+                }
+            });
+
+            // Copy URL to clipboard
+            if (copyUrlBtn && translateUrl) {
+                copyUrlBtn.addEventListener('click', function () {
+                    translateUrl.select();
+                    document.execCommand('copy');
+
+                    // Show copied feedback
+                    const originalHTML = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    this.style.background = '#4cc9f0';
+
+                    setTimeout(() => {
+                        this.innerHTML = originalHTML;
+                        this.style.background = '';
+                    }, 1500);
+                });
+            }
+
+            // Language buttons - Open Google Translate with URL
+            langButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const lang = this.dataset.lang;
+                    const langNames = {
+                        'es': 'Spanish', 'fr': 'French', 'de': 'German', 'pt': 'Portuguese',
+                        'ru': 'Russian', 'zh': 'Chinese', 'ar': 'Arabic', 'ja': 'Japanese'
+                    };
+
+                    // Open Google Translate with current page
+                    const url = `https://translate.google.com/translate?hl=${lang}&sl=en&tl=${lang}&u=${encodeURIComponent(window.location.href)}`;
+                    window.open(url, '_blank', 'noopener,noreferrer');
+
+                    // Show feedback
+                    showTranslationFeedback(`Opening in ${langNames[lang] || lang}...`);
+                });
+            });
+
+            // Dismiss translation permanently
+            if (dismissBtn) {
+                dismissBtn.addEventListener('click', function () {
+                    localStorage.setItem('translation_disabled', 'true');
+                    hideTranslationPanel();
+                    floatingBtn.style.display = 'none';
+                    showTranslationFeedback('Translation helper disabled');
+                });
+            }
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function (e) {
+                // Ctrl+Shift+T or Cmd+Shift+T for translation
+                if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'T') {
+                    e.preventDefault();
+                    if (translationPanel.classList.contains('show')) {
+                        hideTranslationPanel();
+                    } else {
+                        showTranslationPanel();
+                    }
+                }
+
+                // Escape to close
+                if (e.key === 'Escape' && translationPanel.classList.contains('show')) {
+                    hideTranslationPanel();
+                }
+            });
+        });
+
+        function showTranslationPanel() {
+            const panel = document.getElementById('translationPanel');
+            const btn = document.getElementById('translateFloatingBtn');
+
+            if (panel && btn) {
+                panel.classList.add('show');
+                btn.classList.add('active');
+                btn.querySelector('.btn-text').textContent = 'Close';
+            }
+        }
+
+        function hideTranslationPanel() {
+            const panel = document.getElementById('translationPanel');
+            const btn = document.getElementById('translateFloatingBtn');
+
+            if (panel && btn) {
+                panel.classList.remove('show');
+                btn.classList.remove('active');
+                btn.querySelector('.btn-text').textContent = '🌍 Translate';
+            }
+        }
+
+        function showTranslationFeedback(message) {
+            // Remove existing feedback
+            const existing = document.querySelector('.translation-feedback');
+            if (existing) existing.remove();
+
+            // Create feedback element
+            const feedback = document.createElement('div');
+            feedback.className = 'translation-feedback';
+            feedback.innerHTML = `
+                <i class="fas fa-check-circle"></i>
+                <span>${message}</span>
+            `;
+
+            document.body.appendChild(feedback);
+
+            // Auto-remove after 2 seconds
+            setTimeout(() => {
+                if (feedback.parentNode) {
+                    feedback.remove();
+                }
+            }, 2000);
+        }
+
+        // Add translation styles
+        const translationStyles = document.createElement('style');
+        translationStyles.textContent = `
+            /* ======================================== */
+            /* TRANSLATION INTERFACE STYLES */
+            /* ======================================== */
+            
+            .translation-wrapper {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                z-index: 9998;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+            
+            /* Floating Button */
+            .translate-floating-btn {
+                background: linear-gradient(135deg, #4361ee, #3a0ca3);
+                color: white;
+                border: none;
+                padding: 12px 20px;
+                border-radius: 25px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-weight: 600;
+                box-shadow: 0 5px 20px rgba(67, 97, 238, 0.3);
+                transition: all 0.3s ease;
+                font-size: 14px;
+                z-index: 9999;
+                position: relative;
+            }
+            
+            .translate-floating-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4);
+            }
+            
+            .translate-floating-btn.active {
+                background: linear-gradient(135deg, #3a0ca3, #7209b7);
+            }
+            
+            .translate-floating-btn i {
+                font-size: 16px;
+            }
+            
+            /* Translation Panel */
+            .translation-panel {
+                position: absolute;
+                bottom: 100%;
+                right: 0;
+                margin-bottom: 10px;
+                background: white;
+                border-radius: 12px;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+                border: 1px solid #eaeaea;
+                width: 400px;
+                max-width: 90vw !important;
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(10px);
+                transition: all 0.3s ease;
+                z-index: 10000;
+                overflow: hidden;
+            }
+            
+            .translation-panel.show {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+            
+            /* Panel Header */
+            .panel-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 15px 20px;
+                background: linear-gradient(135deg, #4361ee, #3a0ca3);
+                color: white;
+            }
+            
+            .panel-header h4 {
+                margin: 0;
+                font-size: 16px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            
+            .panel-close {
+                background: none;
+                border: none;
+                color: white;
+                font-size: 24px;
+                cursor: pointer;
+                line-height: 1;
+                padding: 0;
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                transition: background 0.3s;
+            }
+            
+            .panel-close:hover {
+                background: rgba(255, 255, 255, 0.2);
+            }
+            
+            /* Panel Content */
+            .panel-content {
+                padding: 20px;
+                max-height: 60vh;
+                overflow-y: auto;
+            }
+            
+            .translation-method {
+                display: flex;
+                gap: 15px;
+                margin-bottom: 25px;
+                padding-bottom: 25px;
+                border-bottom: 1px solid #eaeaea;
+            }
+            
+            .translation-method:last-child {
+                margin-bottom: 0;
+                padding-bottom: 0;
+                border-bottom: none;
+            }
+            
+            .method-icon {
+                width: 40px;
+                height: 40px;
+                background: #f0f7ff;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #4361ee;
+                flex-shrink: 0;
+                font-size: 18px;
+            }
+            
+            .method-content {
+                flex: 1;
+            }
+            
+            .method-content h5 {
+                margin: 0 0 8px 0;
+                color: #333;
+                font-size: 15px;
+            }
+            
+            .method-content p {
+                margin: 0 0 15px 0;
+                color: #666;
+                font-size: 13px;
+                line-height: 1.5;
+            }
+            
+            /* Browser Instructions */
+            .browser-instructions {
+                background: #f8f9fa;
+                border-radius: 8px;
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+            
+            .instruction {
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+                margin-bottom: 12px;
+            }
+            
+            .instruction:last-child {
+                margin-bottom: 0;
+            }
+            
+            .instruction i {
+                font-size: 20px;
+                color: #4361ee;
+                margin-top: 2px;
+                flex-shrink: 0;
+            }
+            
+            .instruction strong {
+                display: block;
+                color: #333;
+                font-size: 13px;
+                margin-bottom: 3px;
+            }
+            
+            .instruction p {
+                margin: 0;
+                color: #666;
+                font-size: 12px;
+                line-height: 1.4;
+            }
+            
+            .translation-tip {
+                display: flex;
+                align-items: flex-start;
+                gap: 10px;
+                padding: 10px;
+                background: #fff9e6;
+                border-radius: 6px;
+                border-left: 3px solid #ff9e00;
+                font-size: 12px;
+            }
+            
+            .translation-tip i {
+                color: #ff9e00;
+                font-size: 14px;
+                flex-shrink: 0;
+            }
+            
+            .translation-tip span {
+                color: #666;
+            }
+            
+            /* URL Copy Section */
+            .translate-url {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 15px;
+            }
+            
+            .translate-url input {
+                flex: 1;
+                padding: 8px 12px;
+                border: 2px solid #eaeaea;
+                border-radius: 6px;
+                font-size: 12px;
+                font-family: monospace;
+                background: #f8f9fa;
+                color: #333;
+            }
+            
+            .copy-url-btn {
+                background: #4361ee;
+                color: white;
+                border: none;
+                padding: 8px 15px;
+                border-radius: 6px;
+                cursor: pointer;
+                font-size: 12px;
+                font-weight: 600;
+                transition: background 0.3s;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                white-space: nowrap;
+            }
+            
+            .copy-url-btn:hover {
+                background: #3a0ca3;
+            }
+            
+            /* Language Buttons */
+            .language-buttons p {
+                margin-bottom: 10px;
+                font-size: 13px;
+                color: #666;
+            }
+            
+            .lang-btns-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            
+            .lang-btn {
+                padding: 8px 12px;
+                background: white;
+                border: 2px solid #eaeaea;
+                border-radius: 6px;
+                cursor: pointer;
+                font-size: 12px;
+                color: #333;
+                transition: all 0.3s;
+                text-align: center;
+            }
+            
+            .lang-btn:hover {
+                border-color: #4361ee;
+                background: #f0f7ff;
+                color: #4361ee;
+            }
+            
+            /* Panel Footer */
+            .panel-footer {
+                padding: 15px 20px;
+                background: #f8f9fa;
+                border-top: 1px solid #eaeaea;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .dismiss-btn {
+                background: none;
+                border: none;
+                color: #666;
+                font-size: 12px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                padding: 5px 10px;
+                border-radius: 4px;
+                transition: background 0.3s;
+            }
+            
+            .dismiss-btn:hover {
+                background: rgba(0, 0, 0, 0.05);
+            }
+            
+            .translation-note {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                font-size: 11px;
+                color: #999;
+            }
+            
+            .translation-note i {
+                font-size: 12px;
+            }
+            
+            /* Feedback Toast */
+            .translation-feedback {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                z-index: 10001;
+                animation: slideInRight 0.3s ease;
+                border-left: 4px solid #4cc9f0;
+            }
+            
+            .translation-feedback i {
+                color: #4cc9f0;
+                font-size: 16px;
+            }
+            
+            .translation-feedback span {
+                color: #333;
+                font-size: 14px;
+            }
+            
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            
+            /* Mobile Responsive */
+            @media (max-width: 768px) {
+                .translation-wrapper {
+                    bottom: 10px;
+                    right: 10px;
+                }
+                
+                .translate-floating-btn {
+                    padding: 10px 15px;
+                }
+                
+                .translate-floating-btn .btn-text {
+                    display: none;
+                }
+                
+                .translate-floating-btn i {
+                    margin: 0;
+                    font-size: 18px;
+                }
+                
+                .translation-panel {
+                    width: 320px !important;
+                    right: -50px;
+                }
+                
+                .lang-btns-grid {
+                    grid-template-columns: 1fr;
+                }
+                
+                .panel-footer {
+                    flex-direction: column;
+                    gap: 10px;
+                    align-items: flex-start;
+                }
+            }
+            
+            @media (max-width: 480px) {
+                .translation-panel {
+                    width: 280px;
+                    right: -80px;
+                }
+                
+                .translation-method {
+                    flex-direction: column;
+                }
+                
+                .method-icon {
+                    align-self: flex-start;
+                }
+            }
+            
+            /* Dark Mode */
+            @media (prefers-color-scheme: dark) {
+                .translation-panel {
+                    background: #1a1a2e;
+                    border-color: #2d4059;
+                }
+                
+                .method-content h5 {
+                    color: #e1e1e1;
+                }
+                
+                .method-content p {
+                    color: #b0b0b0;
+                }
+                
+                .browser-instructions {
+                    background: #0f3460;
+                }
+                
+                .instruction strong {
+                    color: #e1e1e1;
+                }
+                
+                .instruction p {
+                    color: #b0b0b0;
+                }
+                
+                .translation-tip {
+                    background: #2d2d42;
+                    border-left-color: #ff9e00;
+                }
+                
+                .translation-tip span {
+                    color: #b0b0b0;
+                }
+                
+                .translate-url input {
+                    background: #0f3460;
+                    border-color: #2d4059;
+                    color: #e1e1e1;
+                }
+                
+                .lang-btn {
+                    background: #0f3460;
+                    border-color: #2d4059;
+                    color: #e1e1e1;
+                }
+                
+                .lang-btn:hover {
+                    background: #16213e;
+                    border-color: #4361ee;
+                }
+                
+                .panel-footer {
+                    background: #0f3460;
+                    border-color: #2d4059;
+                }
+                
+                .dismiss-btn {
+                    color: #b0b0b0;
+                }
+                
+                .dismiss-btn:hover {
+                    background: rgba(255, 255, 255, 0.1);
+                }
+                
+                .translation-note {
+                    color: #888;
+                }
+                
+                .translation-feedback {
+                    background: #1a1a2e;
+                    border-left-color: #4cc9f0;
+                }
+                
+                .translation-feedback span {
+                    color: #e1e1e1;
+                }
+            }
+        `;
+        document.head.appendChild(translationStyles);
+    </script>
+</body>
+
+</html>
