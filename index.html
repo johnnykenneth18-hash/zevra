@@ -2359,7 +2359,7 @@
 
             setupSmartPrompts() {
                 // Show install prompt based on user behavior
-                window.addEventListener('beforeinstallprompt', (e) => {
+                 window.addEventListener('beforeinstallprompt', (e) => {
                     if (this.shouldShowPrompt()) {
                         this.showSmartPrompt(e);
                     }
