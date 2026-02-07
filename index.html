@@ -49,6 +49,11 @@
                 <a href="#features" class="nav-link">Features</a>
                 <a href="#testimonials" class="nav-link">Testimonials</a>
                 <a href="#contact" class="nav-link">Contact</a>
+                <!-- PWA Install Button -->
+                <button class="pwa-install-btn" id="pwaInstallBtn" style="display: none;">
+                    <i class="fas fa-download"></i>
+                    <span class="btn-text">Install App</span>
+                </button>
             </div>
 
             <div class="nav-actions">
@@ -1613,11 +1618,7 @@
     </script>
 
 
-    <!-- PWA Install Button -->
-    <button class="pwa-install-btn" id="pwaInstallBtn" style="display: none;">
-        <i class="fas fa-download"></i>
-        <span class="btn-text">Install App</span>
-    </button>
+
 
     <script>
         // PWA Installation Handler
@@ -2184,26 +2185,26 @@
     </script>
 
     <script>
-    // First visit install promotion
-    document.addEventListener('DOMContentLoaded', function() {
-        // Check if first visit
-        const firstVisit = !localStorage.getItem('zevra_visited');
-        localStorage.setItem('zevra_visited', 'true');
-        
-        // Show install promotion on first visit after 5 seconds
-        if (firstVisit) {
-            setTimeout(() => {
-                showFirstVisitInstallPromotion();
-            }, 5000);
-        }
-    });
-    
-    function showFirstVisitInstallPromotion() {
-        // Check if PWA installable
-        if ('beforeinstallprompt' in window) {
-            const promo = document.createElement('div');
-            promo.className = 'first-visit-promo';
-            promo.innerHTML = `
+        // First visit install promotion
+        document.addEventListener('DOMContentLoaded', function () {
+            // Check if first visit
+            const firstVisit = !localStorage.getItem('zevra_visited');
+            localStorage.setItem('zevra_visited', 'true');
+
+            // Show install promotion on first visit after 5 seconds
+            if (firstVisit) {
+                setTimeout(() => {
+                    showFirstVisitInstallPromotion();
+                }, 5000);
+            }
+        });
+
+        function showFirstVisitInstallPromotion() {
+            // Check if PWA installable
+            if ('beforeinstallprompt' in window) {
+                const promo = document.createElement('div');
+                promo.className = 'first-visit-promo';
+                promo.innerHTML = `
                 <div class="promo-content">
                     <div class="promo-icon">
                         <i class="fas fa-rocket"></i>
@@ -2218,10 +2219,10 @@
                     </div>
                 </div>
             `;
-            
-            // Add styles
-            const promoStyles = document.createElement('style');
-            promoStyles.textContent = `
+
+                // Add styles
+                const promoStyles = document.createElement('style');
+                promoStyles.textContent = `
                 .first-visit-promo {
                     position: fixed;
                     top: 20px;
@@ -2297,38 +2298,38 @@
                     font-weight: 600;
                 }
             `;
-            
-            document.head.appendChild(promoStyles);
-            document.body.appendChild(promo);
-            
-            // Install button
-            promo.querySelector('.promo-install').addEventListener('click', () => {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                } else {
-                    document.getElementById('pwaInstallBtn').click();
-                }
-                promo.remove();
-                promoStyles.remove();
-            });
-            
-            // Later button
-            promo.querySelector('.promo-later').addEventListener('click', () => {
-                promo.remove();
-                promoStyles.remove();
-                localStorage.setItem('install_promo_dismissed', 'true');
-            });
-            
-            // Auto-remove after 15 seconds
-            setTimeout(() => {
-                if (document.body.contains(promo)) {
+
+                document.head.appendChild(promoStyles);
+                document.body.appendChild(promo);
+
+                // Install button
+                promo.querySelector('.promo-install').addEventListener('click', () => {
+                    if (deferredPrompt) {
+                        deferredPrompt.prompt();
+                    } else {
+                        document.getElementById('pwaInstallBtn').click();
+                    }
                     promo.remove();
                     promoStyles.remove();
-                }
-            }, 15000);
+                });
+
+                // Later button
+                promo.querySelector('.promo-later').addEventListener('click', () => {
+                    promo.remove();
+                    promoStyles.remove();
+                    localStorage.setItem('install_promo_dismissed', 'true');
+                });
+
+                // Auto-remove after 15 seconds
+                setTimeout(() => {
+                    if (document.body.contains(promo)) {
+                        promo.remove();
+                        promoStyles.remove();
+                    }
+                }, 15000);
+            }
         }
-    }
-</script>
+    </script>
 </body>
 
 </html>
