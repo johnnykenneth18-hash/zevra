@@ -18,7 +18,7 @@
                                         'Content-Type': 'application/json',
                                         'Authorization': 'Bearer ' + key
                                     },
-                                    body: JSON.stringify({
+                                    body: JSON.stringify({ 
                                         email: credentials.email,
                                         password: credentials.password
                                     })
