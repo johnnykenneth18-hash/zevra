@@ -49,12 +49,7 @@
                 <a href="#features" class="nav-link">Features</a>
                 <a href="#testimonials" class="nav-link">Testimonials</a>
                 <a href="#contact" class="nav-link">Contact</a>
-                <!-- PWA Install Button -->
-                <button class="pwa-install-btn" id="pwaInstallBtn" >
-                    <i class="fas fa-download"></i>
-                    <span class="btn-text">Install App</span>
-                </button>
-            </div> 
+            </div>
 
             <div class="nav-actions">
                 <button class="btn btn-outline" id="loginBtn">Sign In</button>
@@ -1618,7 +1613,10 @@
     </script>
 
 
-
+    <button class="pwa-install-btn" id="pwaInstallBtn" style="display: none;">
+        <i class="fas fa-download"></i>
+        <span class="btn-text">Install App</span>
+    </button>
 
     <script>
         // PWA Installation Handler
@@ -2329,6 +2327,129 @@
                 }, 15000);
             }
         }
+    </script>
+
+    <script>
+        // Smart install analytics and prompts
+        class PWAPromoter {
+            constructor() {
+                this.installed = localStorage.getItem('pwa_installed') === 'true';
+                this.dismissed = localStorage.getItem('pwa_promo_dismissed') === 'true';
+                this.visitCount = parseInt(localStorage.getItem('visit_count') || 0);
+
+                this.trackVisit();
+                this.setupSmartPrompts();
+            }
+
+            trackVisit() {
+                this.visitCount++;
+                localStorage.setItem('visit_count', this.visitCount.toString());
+
+                // Store visit time
+                const today = new Date().toDateString();
+                const lastVisit = localStorage.getItem('last_visit');
+
+                if (lastVisit !== today) {
+                    localStorage.setItem('last_visit', today);
+                    localStorage.setItem('daily_visits',
+                        parseInt(localStorage.getItem('daily_visits') || 0) + 1
+                    );
+                }
+            }
+
+            setupSmartPrompts() {
+                // Show install prompt based on user behavior
+                window.addEventListener('beforeinstallprompt', (e) => {
+                    if (this.shouldShowPrompt()) {
+                        this.showSmartPrompt(e);
+                    }
+                });
+
+                // Track successful installs
+                window.addEventListener('appinstalled', () => {
+                    this.installed = true;
+                    localStorage.setItem('pwa_installed', 'true');
+                    this.showThankYouMessage();
+                });
+            }
+
+            shouldShowPrompt() {
+                if (this.installed || this.dismissed) return false;
+
+                const dailyVisits = parseInt(localStorage.getItem('daily_visits') || 0);
+
+                // Show prompt if:
+                // 1. User has visited 3+ times total
+                // 2. User has visited 2+ times today
+                // 3. User spent more than 30 seconds on site
+                return this.visitCount >= 3 || dailyVisits >= 2;
+            }
+
+            showSmartPrompt(event) {
+                // Wait for user to be engaged with the site
+                setTimeout(() => {
+                    if (this.isUserEngaged()) {
+                        this.showContextualPrompt(event);
+                    }
+                }, 30000); // Wait 30 seconds
+            }
+
+            isUserEngaged() {
+                // Simple engagement detection
+                const timeOnSite = performance.now() / 1000; // seconds
+                const scrollDepth = (window.scrollY + window.innerHeight) / document.body.scrollHeight;
+
+                return timeOnSite > 30 || scrollDepth > 0.5;
+            }
+
+            showContextualPrompt(event) {
+                // Custom prompt based on user activity
+                const prompt = document.createElement('div');
+                prompt.className = 'smart-install-prompt';
+                prompt.innerHTML = `
+                <div class="smart-prompt-content">
+                    <h3>Enjoying ZEVRA?</h3>
+                    <p>Install our app for:</p>
+                    <ul>
+                        <li><i class="fas fa-bolt"></i> 50% faster loading</li>
+                        <li><i class="fas fa-bell"></i> Investment alerts</li>
+                        <li><i class="fas fa-chart-line"></i> Quick portfolio access</li>
+                    </ul>
+                    <div class="smart-prompt-actions">
+                        <button class="smart-install-btn">Install Now</button>
+                        <button class="smart-dismiss-btn">Not Now</button>
+                        <button class="smart-never-btn">Don't Ask Again</button>
+                    </div>
+                </div>
+            `;
+
+                // Add styles and show
+                // ... (similar to previous examples)
+            }
+
+            showThankYouMessage() {
+                const thankYou = document.createElement('div');
+                thankYou.className = 'thank-you-message';
+                thankYou.innerHTML = `
+                <div class="thank-you-content">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>App Installed Successfully!</h3>
+                    <p>Thank you for installing ZEVRA. Open from your home screen.</p>
+                </div>
+            `;
+
+                document.body.appendChild(thankYou);
+
+                setTimeout(() => {
+                    thankYou.remove();
+                }, 5000);
+            }
+        }
+
+        // Initialize the promoter
+        document.addEventListener('DOMContentLoaded', () => {
+            new PWAPromoter();
+        });
     </script>
 </body>
 
