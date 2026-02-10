@@ -563,6 +563,446 @@ async function savePushSubscription(subscription) {
   }
 }
 
+// ========================================
+// COMPLETE PWA INSTALL SOLUTION
+// ========================================
+
+class PWAInstaller {
+  constructor() {
+    this.deferredPrompt = null;
+    this.installBtn = document.getElementById("pwaInstallBtn");
+    this.hasShownAutoPrompt = false;
+    this.installTracked = localStorage.getItem("pwa_install_tracked");
+    this.isStandalone = window.matchMedia("(display-mode: standalone)").matches;
+
+    this.init();
+  }
+
+  init() {
+    console.log("🚀 PWA Installer initialized");
+
+    // Hide if already in standalone mode
+    if (this.isStandalone) {
+      this.hideInstallButton();
+      return;
+    }
+
+    // Setup event listeners
+    this.setupEventListeners();
+
+    // Show install button if PWA is installable
+    this.checkIfInstallable();
+  }
+
+  setupEventListeners() {
+    // Listen for beforeinstallprompt event
+    window.addEventListener("beforeinstallprompt", (e) => {
+      console.log("📱 PWA install prompt available");
+      e.preventDefault();
+      this.deferredPrompt = e;
+
+      // Show install button immediately
+      this.showInstallButton();
+
+      // Auto-show prompt after 30 seconds if not dismissed
+      setTimeout(() => {
+        if (!this.hasShownAutoPrompt && !this.installTracked) {
+          this.showAutoInstallPrompt();
+        }
+      }, 30000);
+    });
+
+    // Handle app installation
+    window.addEventListener("appinstalled", () => {
+      console.log("🎉 PWA installed successfully!");
+      this.onAppInstalled();
+    });
+
+    // Check if already installed
+    window.addEventListener("load", () => {
+      this.checkIfInstalled();
+    });
+  }
+
+  showInstallButton() {
+    if (this.installBtn) {
+      this.installBtn.style.display = "flex";
+      this.installBtn.style.animation = "pulse 2s infinite";
+
+      // Add click event
+      this.installBtn.addEventListener("click", () => {
+        this.triggerInstall();
+      });
+    }
+  }
+
+  hideInstallButton() {
+    if (this.installBtn) {
+      this.installBtn.style.display = "none";
+    }
+  }
+
+  showAutoInstallPrompt() {
+    // Check if user already dismissed
+    if (localStorage.getItem("pwa_auto_prompt_dismissed")) {
+      return;
+    }
+
+    // Don't show if already in standalone mode
+    if (this.isStandalone) {
+      return;
+    }
+
+    this.hasShownAutoPrompt = true;
+
+    // Create auto-install modal
+    const modal = document.createElement("div");
+    modal.className = "auto-install-modal";
+    modal.innerHTML = `
+            <div class="auto-install-content">
+                <div style="margin-bottom: 20px;">
+                    <i class="fas fa-rocket" style="font-size: 48px; color: #4361ee;"></i>
+                </div>
+                <h2 style="margin: 0 0 15px 0; color: #333;">Install ZEVRA App</h2>
+                <p style="color: #666; margin-bottom: 25px; line-height: 1.5;">
+                    For better performance, faster access, and investment notifications!
+                </p>
+                
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 25px; text-align: left;">
+                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                        <i class="fas fa-bolt" style="color: #4cc9f0; margin-right: 10px;"></i>
+                        <span>50% faster loading</span>
+                    </div>
+                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                        <i class="fas fa-bell" style="color: #f72585; margin-right: 10px;"></i>
+                        <span>Real-time investment alerts</span>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <i class="fas fa-home" style="color: #7209b7; margin-right: 10px;"></i>
+                        <span>Home screen access</span>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn-install-now" style="
+                        flex: 2;
+                        background: #4361ee;
+                        color: white;
+                        border: none;
+                        padding: 12px 20px;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        font-weight: 600;
+                        font-size: 16px;
+                    ">
+                        <i class="fas fa-download"></i> Install Now
+                    </button>
+                    <button class="btn-ask-later" style="
+                        flex: 1;
+                        background: #f0f7ff;
+                        color: #4361ee;
+                        border: 2px solid #4361ee;
+                        padding: 12px;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        font-weight: 600;
+                    ">
+                        Later
+                    </button>
+                </div>
+                
+                <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eaeaea;">
+                    <p style="font-size: 12px; color: #999; margin: 0;">
+                        <i class="fas fa-info-circle"></i> No download needed - adds to home screen
+                    </p>
+                </div>
+            </div>
+        `;
+
+    document.body.appendChild(modal);
+
+    // Add event listeners for modal buttons
+    modal.querySelector(".btn-install-now").addEventListener("click", () => {
+      this.triggerInstall();
+      modal.remove();
+    });
+
+    modal.querySelector(".btn-ask-later").addEventListener("click", () => {
+      modal.remove();
+      localStorage.setItem("pwa_auto_prompt_dismissed", "true");
+    });
+
+    // Close modal when clicking outside
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.remove();
+        localStorage.setItem("pwa_auto_prompt_dismissed", "true");
+      }
+    });
+
+    // Auto-dismiss after 15 seconds
+    setTimeout(() => {
+      if (document.body.contains(modal)) {
+        modal.remove();
+        localStorage.setItem("pwa_auto_prompt_dismissed", "true");
+      }
+    }, 15000);
+  }
+
+  async triggerInstall() {
+    if (!this.deferredPrompt) {
+      this.showManualInstructions();
+      return;
+    }
+
+    try {
+      console.log("Triggering install prompt...");
+
+      // Show the native install prompt
+      this.deferredPrompt.prompt();
+
+      // Wait for user to respond
+      const { outcome } = await this.deferredPrompt.userChoice;
+
+      console.log(`User response: ${outcome}`);
+
+      if (outcome === "accepted") {
+        this.onInstallAccepted();
+      } else {
+        this.onInstallDeclined();
+      }
+
+      this.deferredPrompt = null;
+    } catch (error) {
+      console.error("Install error:", error);
+      this.showManualInstructions();
+    }
+  }
+
+  onInstallAccepted() {
+    // Update button
+    if (this.installBtn) {
+      this.installBtn.innerHTML =
+        '<i class="fas fa-check"></i> <span class="btn-text">Installed!</span>';
+      this.installBtn.classList.add("installed");
+      this.installBtn.style.animation = "none";
+      this.installBtn.disabled = true;
+    }
+
+    // Track installation
+    this.trackInstallation("accepted");
+
+    // Show success message
+    this.showNotification(
+      "App installed successfully! Open from home screen.",
+      "success",
+    );
+
+    // Hide after 3 seconds
+    setTimeout(() => {
+      this.hideInstallButton();
+    }, 3000);
+  }
+
+  onInstallDeclined() {
+    this.trackInstallation("declined");
+
+    // Show message and hide button
+    this.showNotification("You can install later from the menu", "info");
+
+    setTimeout(() => {
+      this.hideInstallButton();
+    }, 2000);
+  }
+
+  onAppInstalled() {
+    this.trackInstallation("auto");
+    this.hideInstallButton();
+
+    // Show welcome message
+    this.showNotification("Welcome to ZEVRA App!", "success");
+
+    // Reload in standalone mode
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  }
+
+  checkIfInstalled() {
+    // Check various ways app might be installed
+    const isStandalone = window.matchMedia(
+      "(display-mode: standalone)",
+    ).matches;
+    const isFullscreen =
+      document.fullscreenElement || document.webkitFullscreenElement;
+    const hasLaunchEvent = "onappinstalled" in window;
+
+    if (isStandalone || isFullscreen) {
+      console.log("App is already installed/running in standalone mode");
+      this.hideInstallButton();
+      return true;
+    }
+
+    return false;
+  }
+
+  checkIfInstallable() {
+    // Check if browser supports PWA installation
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isAndroid = /Android/.test(navigator.userAgent);
+    const isChrome = /Chrome/.test(navigator.userAgent);
+    const isEdge = /Edg/.test(navigator.userAgent);
+    const isSafari = /Safari/.test(navigator.userAgent) && !isChrome;
+
+    console.log("Browser check:", {
+      isIOS,
+      isAndroid,
+      isChrome,
+      isEdge,
+      isSafari,
+    });
+
+    // Show install button for supported browsers
+    if ((isAndroid && isChrome) || (isIOS && isSafari) || isEdge) {
+      // Show button after 5 seconds
+      setTimeout(() => {
+        if (!this.isStandalone && !this.installTracked) {
+          this.showInstallButton();
+        }
+      }, 5000);
+    }
+  }
+
+  showManualInstructions() {
+    const modal = document.createElement("div");
+    modal.className = "auto-install-modal";
+    modal.innerHTML = `
+            <div class="auto-install-content">
+                <h3 style="margin: 0 0 15px 0; color: #333;">How to Install</h3>
+                
+                <div style="text-align: left; margin-bottom: 20px;">
+                    <div style="margin-bottom: 15px;">
+                        <strong><i class="fab fa-android"></i> Android (Chrome):</strong>
+                        <p style="margin: 5px 0; font-size: 14px;">Tap ⋮ menu → "Install app"</p>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <strong><i class="fab fa-apple"></i> iPhone (Safari):</strong>
+                        <p style="margin: 5px 0; font-size: 14px;">Tap Share → "Add to Home Screen"</p>
+                    </div>
+                    <div>
+                        <strong><i class="fas fa-desktop"></i> Desktop:</strong>
+                        <p style="margin: 5px 0; font-size: 14px;">Look for install icon <i class="fas fa-download"></i> in address bar</p>
+                    </div>
+                </div>
+                
+                <button class="btn-close" style="
+                    background: #4361ee;
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-weight: 600;
+                ">
+                    Got it!
+                </button>
+            </div>
+        `;
+
+    document.body.appendChild(modal);
+
+    modal.querySelector(".btn-close").addEventListener("click", () => {
+      modal.remove();
+    });
+
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.remove();
+      }
+    });
+  }
+
+  trackInstallation(type) {
+    const data = {
+      type: type,
+      platform: navigator.platform,
+      userAgent: navigator.userAgent,
+      timestamp: new Date().toISOString(),
+    };
+
+    localStorage.setItem("pwa_install_tracked", JSON.stringify(data));
+    console.log("Installation tracked:", data);
+  }
+
+  showNotification(message, type = "info") {
+    // Remove existing notifications
+    document.querySelectorAll(".pwa-notification").forEach((el) => el.remove());
+
+    const notification = document.createElement("div");
+    notification.className = `pwa-notification ${type}`;
+    notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 10001;
+            animation: slideIn 0.3s ease;
+            border-left: 4px solid #4361ee;
+        `;
+
+    const icon =
+      type === "success"
+        ? "check-circle"
+        : type === "error"
+          ? "exclamation-circle"
+          : "info-circle";
+    const color =
+      type === "success" ? "#27ae60" : type === "error" ? "#e74c3c" : "#4361ee";
+
+    notification.innerHTML = `
+            <i class="fas fa-${icon}" style="color: ${color}; font-size: 18px;"></i>
+            <span>${message}</span>
+        `;
+
+    document.body.appendChild(notification);
+
+    // Auto-remove after 3 seconds
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.remove();
+      }
+    }, 3000);
+  }
+}
+
+// Initialize PWA installer when page loads
+document.addEventListener("DOMContentLoaded", function () {
+  // Wait a bit to ensure everything is loaded
+  setTimeout(() => {
+    window.pwaInstaller = new PWAInstaller();
+
+    // Also add install button to dashboard if not present
+    if (
+      window.location.pathname.includes("dashboard.html") &&
+      !document.getElementById("pwaInstallBtn")
+    ) {
+      const installBtn = document.createElement("button");
+      installBtn.id = "pwaInstallBtn";
+      installBtn.className = "pwa-install-btn";
+      installBtn.style.display = "none";
+      installBtn.innerHTML =
+        '<i class="fas fa-download"></i> <span class="btn-text">Install App</span>';
+      document.body.appendChild(installBtn);
+    }
+  }, 1000);
+});
+
 // Initialize PWA features
 document.addEventListener("DOMContentLoaded", function () {
   // Check PWA support
