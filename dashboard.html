@@ -1676,6 +1676,103 @@
         `;
         document.head.appendChild(translationStyles);
     </script>
+
+    <!-- PWA Install Button (Floating) -->
+    <button class="floating-install-btn" id="floatingInstallBtn" style="display: none;">
+        <i class="fas fa-download"></i>
+        <span>Install App</span>
+    </button>
+
+    <script>
+        // Add floating button styles
+        const floatingBtnStyles = document.createElement('style');
+        floatingBtnStyles.textContent = `
+    .floating-install-btn {
+      position: fixed;
+      bottom: 100px;
+      right: 30px;
+      background: linear-gradient(135deg, #4361ee, #3a0ca3);
+      color: white;
+      border: none;
+      padding: 15px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      box-shadow: 0 5px 20px rgba(67, 97, 238, 0.3);
+      z-index: 9998;
+      animation: floatPulse 2s infinite;
+      transition: all 0.3s ease;
+    }
+    
+    .floating-install-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4);
+    }
+    
+    @keyframes floatPulse {
+      0% {
+        transform: translateY(0);
+        box-shadow: 0 5px 20px rgba(67, 97, 238, 0.3);
+      }
+      50% {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(67, 97, 238, 0.4);
+      }
+      100% {
+        transform: translateY(0);
+        box-shadow: 0 5px 20px rgba(67, 97, 238, 0.3);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .floating-install-btn {
+        bottom: 80px;
+        right: 20px;
+        padding: 12px 15px;
+      }
+      
+      .floating-install-btn span {
+        display: none;
+      }
+    }
+  `;
+        document.head.appendChild(floatingBtnStyles);
+
+        // Capture beforeinstallprompt event globally
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('📱 PWA install available');
+            e.preventDefault();
+            window.deferredPrompt = e;
+
+            // Show floating button
+            const floatingBtn = document.getElementById('floatingInstallBtn');
+            if (floatingBtn) {
+                floatingBtn.style.display = 'flex';
+                floatingBtn.addEventListener('click', () => {
+                    triggerPWAInstall();
+                });
+            }
+        });
+
+        // Handle app installed event
+        window.addEventListener('appinstalled', () => {
+            console.log('🎉 PWA installed!');
+
+            // Hide floating button
+            const floatingBtn = document.getElementById('floatingInstallBtn');
+            if (floatingBtn) {
+                floatingBtn.style.display = 'none';
+            }
+
+            // Show success message
+            if (typeof showNotification === 'function') {
+                showNotification('App installed successfully!', 'success');
+            }
+        });
+    </script>
 </body>
 
 </html>

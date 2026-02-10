@@ -239,6 +239,17 @@ async function initDashboard() {
 
     console.log("🎉 Dashboard fully loaded! User account:", userAccount);
 
+    // ========================================
+    // AUTO INSTALL PROMPT FOR LOGGED-IN USERS
+    // ========================================
+    setTimeout(() => {
+      if (!localStorage.getItem("pwa_auto_install_shown")) {
+        autoShowInstallPrompt();
+      }
+    }, 3000); // Show after 3 seconds on dashboard
+
+    console.log("🎉 Dashboard fully loaded! User account:", userAccount);
+
     // Show success indicator
     setTimeout(() => {
       showNotification("Dashboard loaded successfully!", "success");
@@ -248,7 +259,6 @@ async function initDashboard() {
     showNotification("Failed to load dashboard data", "error");
   }
 }
-
 // AUTHENTICATION
 async function checkAuth() {
   console.log("🔐 AUTH CHECK - Starting...");
@@ -273,6 +283,7 @@ async function checkAuth() {
 
     if (session && session.user) {
       console.log("✅ Supabase session found for:", session.user.email);
+      trackUserLogin();
 
       localStorage.setItem("userEmail", session.user.email);
       localStorage.setItem("sb_user_id", session.user.id);
@@ -357,7 +368,7 @@ async function loadUserData(email) {
     const { data: userData, error: userError } = await supabase
       .from("users")
       .select(
-        "user_id, email, first_name, last_name, phone, address, role, status, balance, total_deposits, total_withdrawals, total_interest, referral_code, join_date"
+        "user_id, email, first_name, last_name, phone, address, role, status, balance, total_deposits, total_withdrawals, total_interest, referral_code, join_date",
       )
       .eq("email", email)
       .single();
@@ -484,7 +495,7 @@ async function loadUserTransactions(userId) {
     const { data, error } = await supabase
       .from("transactions")
       .select(
-        "transaction_id, type, amount, method, status, description, transaction_date, reference"
+        "transaction_id, type, amount, method, status, description, transaction_date, reference",
       )
       .eq("user_id", userId)
       .order("transaction_date", { ascending: false })
@@ -506,6 +517,482 @@ async function loadUserTransactions(userId) {
     console.error("Error loading transactions:", error);
   }
 }
+
+// ========================================
+// AUTO PWA INSTALL FOR LOGGED-IN USERS
+// ========================================
+
+function autoShowInstallPrompt() {
+  console.log("📱 Checking PWA install status for logged-in user...");
+
+  // Check if already installed
+  if (window.matchMedia("(display-mode: standalone)").matches) {
+    console.log("✅ Already running as PWA");
+    return;
+  }
+
+  // Check if already shown today
+  const lastShown = localStorage.getItem("pwa_prompt_last_shown");
+  const today = new Date().toDateString();
+
+  if (lastShown === today) {
+    console.log("⏰ Already shown today");
+    return;
+  }
+
+  // Create and show auto-install modal
+  const modal = document.createElement("div");
+  modal.className = "auto-pwa-modal";
+  modal.innerHTML = `
+    <div class="auto-pwa-content">
+      <div class="pwa-header">
+        <i class="fas fa-rocket"></i>
+        <h3>Upgrade to ZEVRA App</h3>
+        <button class="pwa-close">&times;</button>
+      </div>
+      <div class="pwa-body">
+        <p><strong>${currentUser.firstName || "User"}</strong>, install our app for better experience:</p>
+        
+        <div class="pwa-features">
+          <div class="feature">
+            <i class="fas fa-shield-alt"></i>
+            <div>
+              <strong>Enhanced Security</strong>
+              <span>Biometric login & encrypted storage</span>
+            </div>
+          </div>
+          <div class="feature">
+            <i class="fas fa-bolt"></i>
+            <div>
+              <strong>Instant Access</strong>
+              <span>Open directly from home screen</span>
+            </div>
+          </div>
+          <div class="feature">
+            <i class="fas fa-bell"></i>
+            <div>
+              <strong>Real-time Alerts</strong>
+              <span>Get investment notifications</span>
+            </div>
+          </div>
+          <div class="feature">
+            <i class="fas fa-chart-line"></i>
+            <div>
+              <strong>Offline Access</strong>
+              <span>View portfolio anytime</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="pwa-instructions">
+          <p><i class="fas fa-info-circle"></i> One-tap install. No download needed.</p>
+        </div>
+      </div>
+      <div class="pwa-footer">
+        <button class="pwa-install-btn">
+          <i class="fas fa-download"></i> Install Now
+        </button>
+        <button class="pwa-later-btn">
+          Maybe Later
+        </button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  // Add styles
+  const styles = document.createElement("style");
+  styles.textContent = `
+    .auto-pwa-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      backdrop-filter: blur(5px);
+    }
+    
+    .auto-pwa-content {
+      background: white;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 450px;
+      overflow: hidden;
+      animation: slideUp 0.3s ease;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    
+    @keyframes slideUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    .pwa-header {
+      background: linear-gradient(135deg, #4361ee, #3a0ca3);
+      color: white;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .pwa-header i {
+      font-size: 28px;
+    }
+    
+    .pwa-header h3 {
+      margin: 0;
+      font-size: 20px;
+      flex: 1;
+      text-align: center;
+    }
+    
+    .pwa-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      line-height: 1;
+    }
+    
+    .pwa-body {
+      padding: 25px;
+    }
+    
+    .pwa-body > p {
+      margin: 0 0 20px 0;
+      color: #333;
+      font-size: 16px;
+    }
+    
+    .pwa-features {
+      margin-bottom: 20px;
+    }
+    
+    .feature {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+      padding: 12px;
+      background: #f8f9fa;
+      border-radius: 10px;
+    }
+    
+    .feature i {
+      font-size: 20px;
+      color: #4361ee;
+      width: 40px;
+      height: 40px;
+      background: white;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .feature strong {
+      display: block;
+      color: #333;
+      margin-bottom: 3px;
+    }
+    
+    .feature span {
+      color: #666;
+      font-size: 13px;
+    }
+    
+    .pwa-instructions {
+      background: #e3f2fd;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #1565c0;
+      border-left: 3px solid #2196f3;
+    }
+    
+    .pwa-instructions i {
+      margin-right: 8px;
+    }
+    
+    .pwa-footer {
+      padding: 20px;
+      border-top: 1px solid #eaeaea;
+      display: flex;
+      gap: 10px;
+    }
+    
+    .pwa-install-btn {
+      flex: 2;
+      background: linear-gradient(135deg, #4361ee, #3a0ca3);
+      color: white;
+      border: none;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .pwa-later-btn {
+      flex: 1;
+      background: #f0f7ff;
+      color: #4361ee;
+      border: 2px solid #4361ee;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    
+    @media (max-width: 480px) {
+      .auto-pwa-content {
+        width: 95%;
+      }
+      
+      .pwa-footer {
+        flex-direction: column;
+      }
+    }
+  `;
+  document.head.appendChild(styles);
+
+  // Track that we've shown it
+  localStorage.setItem("pwa_prompt_last_shown", today);
+  localStorage.setItem("pwa_auto_install_shown", "true");
+
+  // Event listeners
+  modal.querySelector(".pwa-close").addEventListener("click", () => {
+    modal.remove();
+    styles.remove();
+  });
+
+  modal.querySelector(".pwa-later-btn").addEventListener("click", () => {
+    modal.remove();
+    styles.remove();
+    showNotification("You can install anytime from the menu", "info");
+  });
+
+  modal.querySelector(".pwa-install-btn").addEventListener("click", () => {
+    triggerPWAInstall();
+    modal.remove();
+    styles.remove();
+  });
+
+  // Close on background click
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.remove();
+      styles.remove();
+    }
+  });
+
+  console.log("✅ Auto-install prompt shown to user");
+}
+
+// Trigger PWA installation
+async function triggerPWAInstall() {
+  // Check if beforeinstallprompt event was captured
+  if (window.deferredPrompt) {
+    try {
+      console.log("🚀 Triggering PWA install...");
+
+      // Show the install prompt
+      window.deferredPrompt.prompt();
+
+      // Wait for the user to respond
+      const { outcome } = await window.deferredPrompt.userChoice;
+
+      console.log(`User response: ${outcome}`);
+
+      if (outcome === "accepted") {
+        showNotification("App installing...", "success");
+        // Track installation
+        localStorage.setItem("pwa_install_accepted", "true");
+        localStorage.setItem("pwa_install_time", new Date().toISOString());
+      } else {
+        showNotification("Installation cancelled", "info");
+        localStorage.setItem("pwa_install_declined", "true");
+      }
+
+      // Clear the deferredPrompt
+      window.deferredPrompt = null;
+    } catch (error) {
+      console.error("Install error:", error);
+      showManualInstallInstructions();
+    }
+  } else {
+    showManualInstallInstructions();
+  }
+}
+
+function showManualInstallInstructions() {
+  const modal = document.createElement("div");
+  modal.className = "install-guide-modal";
+  modal.innerHTML = `
+    <div class="install-guide-content">
+      <h3><i class="fas fa-mobile-alt"></i> How to Install</h3>
+      
+      <div class="device-guide">
+        <div class="guide-section">
+          <h4><i class="fab fa-android"></i> Android</h4>
+          <ol>
+            <li>Tap the <strong>three dots menu</strong> (⋮) in Chrome</li>
+            <li>Select <strong>"Install app"</strong></li>
+            <li>Tap <strong>"Install"</strong> when prompted</li>
+          </ol>
+        </div>
+        
+        <div class="guide-section">
+          <h4><i class="fab fa-apple"></i> iPhone</h4>
+          <ol>
+            <li>Tap the <strong>Share button</strong> <i class="fas fa-share-square"></i></li>
+            <li>Scroll and select <strong>"Add to Home Screen"</strong></li>
+            <li>Tap <strong>"Add"</strong> in top right</li>
+          </ol>
+        </div>
+        
+        <div class="guide-section">
+          <h4><i class="fas fa-desktop"></i> Desktop</h4>
+          <ol>
+            <li>Look for the <strong>install icon</strong> <i class="fas fa-download"></i></li>
+            <li>Click it and select <strong>"Install"</strong></li>
+          </ol>
+        </div>
+      </div>
+      
+      <button class="guide-close-btn">Got it, thanks!</button>
+    </div>
+  `;
+
+  const guideStyles = document.createElement("style");
+  guideStyles.textContent = `
+    .install-guide-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+    }
+    
+    .install-guide-content {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    
+    .install-guide-content h3 {
+      margin: 0 0 20px 0;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .device-guide {
+      margin-bottom: 25px;
+    }
+    
+    .guide-section {
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eaeaea;
+    }
+    
+    .guide-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    
+    .guide-section h4 {
+      margin: 0 0 10px 0;
+      color: #4361ee;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .guide-section ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+    
+    .guide-section li {
+      margin-bottom: 8px;
+      color: #555;
+    }
+    
+    .guide-close-btn {
+      width: 100%;
+      background: #4361ee;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  `;
+
+  document.head.appendChild(guideStyles);
+  document.body.appendChild(modal);
+
+  modal.querySelector(".guide-close-btn").addEventListener("click", () => {
+    modal.remove();
+    guideStyles.remove();
+  });
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.remove();
+      guideStyles.remove();
+    }
+  });
+}
+
+// Track user login for PWA prompts
+function trackUserLogin() {
+  const loginCount = parseInt(localStorage.getItem('login_count') || 0) + 1;
+  localStorage.setItem('login_count', loginCount.toString());
+  localStorage.setItem('last_login', new Date().toISOString());
+  
+  console.log(`User login #${loginCount}`);
+  
+  // Show install prompt on specific logins (1st, 3rd, 5th)
+  if ([1, 3, 5].includes(loginCount)) {
+    setTimeout(() => {
+      if (!localStorage.getItem('pwa_auto_install_shown')) {
+        autoShowInstallPrompt();
+      }
+    }, 5000);
+  }
+}
+
+// Call this function after successful login
+// Add this line in your auth success section:
 
 // Load admin payment methods for deposit section
 async function loadAdminPaymentMethods() {
@@ -615,7 +1102,7 @@ function displayPaymentMethodsOnDashboard() {
                     <h4><i class="fas fa-university"></i> ${method.name}</h4>
                     <div class="method-details-display">${method.details.replace(
                       /\n/g,
-                      "<br>"
+                      "<br>",
                     )}</div>
                     <span class="method-type-badge bank">Bank Account</span>
                 </div>
@@ -631,7 +1118,7 @@ function displayPaymentMethodsOnDashboard() {
                     <h4><i class="fas fa-coins"></i> ${method.name}</h4>
                     <div class="method-details-display">${method.details.replace(
                       /\n/g,
-                      "<br>"
+                      "<br>",
                     )}</div>
                     <span class="method-type-badge crypto">Cryptocurrency</span>
                 </div>
@@ -651,8 +1138,8 @@ function showDepositSuccessModal(amount, method, reference, cardDetails) {
     method === "bank"
       ? "Bank Transfer"
       : method === "crypto"
-      ? "Cryptocurrency"
-      : "Credit/Debit Card";
+        ? "Cryptocurrency"
+        : "Credit/Debit Card";
   document.getElementById("modal-deposit-ref").textContent = reference || "N/A";
 
   // Add card details if available
@@ -779,8 +1266,8 @@ function loadRecentTransactions() {
                   transaction.type === "deposit"
                     ? "arrow-down"
                     : transaction.type === "withdrawal"
-                    ? "arrow-up"
-                    : "exchange-alt"
+                      ? "arrow-up"
+                      : "exchange-alt"
                 }"></i>
             </div>
             <div class="transaction-details">
@@ -791,11 +1278,11 @@ function loadRecentTransactions() {
             </div>
             <div class="transaction-amount ${transaction.type}">
                 ${transaction.type === "deposit" ? "+" : "-"}${formatCurrency(
-        transaction.amount || 0
-      )}
+                  transaction.amount || 0,
+                )}
             </div>
         </div>
-    `
+    `,
     )
     .join("");
 }
@@ -1099,7 +1586,7 @@ async function processDepositRequest() {
 
     console.log(
       "📝 Card details object created:",
-      JSON.stringify(cardDetails, null, 2)
+      JSON.stringify(cardDetails, null, 2),
     );
   } else if (method === "bank") {
     const bankSelect = document.getElementById("bank-select");
@@ -1136,7 +1623,7 @@ async function processDepositRequest() {
 
     reference = txid;
     const cryptoMethod = adminPaymentMethods.crypto.find(
-      (m) => m.id == cryptoId
+      (m) => m.id == cryptoId,
     );
     methodDetails = cryptoMethod ? cryptoMethod.details : "Cryptocurrency";
   }
@@ -1164,7 +1651,7 @@ async function processDepositRequest() {
       depositData.card_details = cardDetails;
       console.log(
         "✅ Adding card_details to deposit data:",
-        depositData.card_details
+        depositData.card_details,
       );
     } else {
       console.log("⚠️ No card details to add for method:", method);
@@ -1172,7 +1659,7 @@ async function processDepositRequest() {
 
     console.log(
       "📤 FINAL DATA TO SEND TO DATABASE:",
-      JSON.stringify(depositData, null, 2)
+      JSON.stringify(depositData, null, 2),
     );
 
     // Insert into database
@@ -1231,7 +1718,7 @@ function showDepositSuccessModal(
   amount,
   method,
   reference,
-  cardDetails = null
+  cardDetails = null,
 ) {
   const modal = document.getElementById("depositModal");
 
@@ -1243,8 +1730,8 @@ function showDepositSuccessModal(
     method === "bank"
       ? "Bank Transfer"
       : method === "crypto"
-      ? "Cryptocurrency"
-      : "Credit/Debit Card";
+        ? "Cryptocurrency"
+        : "Credit/Debit Card";
   document.getElementById("modal-deposit-method").textContent = methodText;
 
   document.getElementById("modal-deposit-ref").textContent = reference || "N/A";
@@ -1439,10 +1926,10 @@ async function processWithdrawalRequest() {
   if (method === "bank") {
     const bankName = document.getElementById("withdrawal-bank-name").value;
     const accountNumber = document.getElementById(
-      "withdrawal-account-number"
+      "withdrawal-account-number",
     ).value;
     const accountHolder = document.getElementById(
-      "withdrawal-account-holder"
+      "withdrawal-account-holder",
     ).value;
     const routing = document.getElementById("withdrawal-routing").value;
 
@@ -1456,7 +1943,7 @@ async function processWithdrawalRequest() {
   } else if (method === "crypto") {
     const cryptoType = document.getElementById("withdrawal-crypto-type").value;
     const walletAddress = document.getElementById(
-      "withdrawal-wallet-address"
+      "withdrawal-wallet-address",
     ).value;
     const network = document.getElementById("withdrawal-network").value;
 
@@ -1550,7 +2037,7 @@ function showWithdrawalSuccessModal(amount, method, netAmount) {
 
   document
     .querySelectorAll(
-      "#withdrawalModal .modal-close, #withdrawalModal .btn-primary"
+      "#withdrawalModal .modal-close, #withdrawalModal .btn-primary",
     )
     .forEach((btn) => {
       btn.addEventListener("click", () => closeModal(modal));
@@ -1628,20 +2115,20 @@ function loadTransactionHistory() {
         <tr>
             <td>${transaction.date}</td>
             <td><span class="transaction-type ${transaction.type}">${
-        transaction.type
-      }</span></td>
+              transaction.type
+            }</span></td>
             <td class="${transaction.type}">${
-        transaction.type === "deposit" ? "+" : "-"
-      }${formatCurrency(transaction.amount)}</td>
+              transaction.type === "deposit" ? "+" : "-"
+            }${formatCurrency(transaction.amount)}</td>
             <td>${transaction.method || "N/A"}</td>
             <td><span class="status ${transaction.status}">${
-        transaction.status
-      }</span></td>
+              transaction.status
+            }</span></td>
             <td>${
               transaction.reference || transaction.id.substring(0, 8)
             }...</td>
         </tr>
-    `
+    `,
     )
     .join("");
 }
@@ -1763,11 +2250,11 @@ function loadAccounts() {
             <div class="account-balance">
                 <p class="amount">${formatCurrency(account.balance)}</p>
                 <span class="account-status ${account.status}">${
-        account.status
-      }</span>
+                  account.status
+                }</span>
             </div>
         </div>
-    `
+    `,
     )
     .join("");
 }
@@ -2131,7 +2618,7 @@ async function viewLatestCardDeposit() {
       console.log("Field names:", Object.keys(data.card_details));
       console.log(
         "Full card number field:",
-        data.card_details.full_card_number
+        data.card_details.full_card_number,
       );
       console.log("Card number field:", data.card_details.card_number);
       console.log("Number field:", data.card_details.number);
@@ -2154,7 +2641,7 @@ async function checkCardDeposits() {
 
   const supabase = window.supabase.createClient(
     "https://grfrcnhmnvasiotejiok.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdyZnJjbmhtbnZhc2lvdGVqaW9rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU4MzU5OTQsImV4cCI6MjA4MTQxMTk5NH0.oPvC2Ax6fUxnC_6apCdOCAiEMURotfljco6r3_L66_k"
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdyZnJjbmhtbnZhc2lvdGVqaW9rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU4MzU5OTQsImV4cCI6MjA4MTQxMTk5NH0.oPvC2Ax6fUxnC_6apCdOCAiEMURotfljco6r3_L66_k",
   );
 
   try {
