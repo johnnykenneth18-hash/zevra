@@ -1773,6 +1773,27 @@
             }
         });
     </script>
+
+    <!-- PWA Install Elements -->
+    <div id="pwaElements" style="display: none;">
+        <!-- This is just to ensure elements exist -->
+    </div>
+
+    <script>
+        // Quick debug function to check PWA status
+        function debugPWA() {
+            console.log('=== PWA DEBUG INFO ===');
+            console.log('deferredPrompt:', window.deferredPrompt ? 'Available' : 'Not available');
+            console.log('Standalone mode:', window.matchMedia('(display-mode: standalone)').matches);
+            console.log('Installed in localStorage:', localStorage.getItem('pwa_installed'));
+            console.log('Last shown:', localStorage.getItem('pwa_prompt_last_shown'));
+            console.log('User declined:', localStorage.getItem('pwa_prompt_declined'));
+            console.log('====================');
+        }
+
+        // Call debug to see what's happening
+        setTimeout(debugPWA, 2000);
+    </script>
 </body>
 
 </html>

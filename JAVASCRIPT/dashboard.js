@@ -8,10 +8,142 @@ let userAccount = null;
 let supabase = null;
 
 // Initialize dashboard when DOM is loaded
+// Add this RIGHT AFTER the DOMContentLoaded event listener
 document.addEventListener("DOMContentLoaded", function () {
   console.log("Dashboard loaded - Supabase Edition");
   initDashboard();
+
+  // ========================================
+  // PWA INSTALL MANAGER - MUST BE AT TOP
+  // ========================================
+  initPWAInstallManager();
 });
+
+// PWA Install Manager
+function initPWAInstallManager() {
+  console.log("📱 Initializing PWA Install Manager...");
+
+  let deferredPrompt = null;
+
+  // Listen for beforeinstallprompt event
+  window.addEventListener("beforeinstallprompt", (e) => {
+    console.log("✅ PWA install prompt available!");
+    e.preventDefault();
+    deferredPrompt = e;
+
+    // Store globally for other functions to use
+    window.deferredPrompt = deferredPrompt;
+
+    // Show install button immediately
+    showPWAInstallButton();
+
+    // Auto-show prompt for logged-in users after 5 seconds
+    setTimeout(() => {
+      showAutoInstallPrompt();
+    }, 5000);
+  });
+
+  // Listen for app installed event
+  window.addEventListener("appinstalled", () => {
+    console.log("🎉 PWA installed successfully!");
+    hidePWAInstallButton();
+    showNotification("App installed! Open from home screen.", "success");
+    localStorage.setItem("pwa_installed", "true");
+  });
+
+  // Check if already installed
+  if (window.matchMedia("(display-mode: standalone)").matches) {
+    console.log("📱 Already running as PWA");
+    localStorage.setItem("pwa_installed", "true");
+  }
+}
+
+function showPWAInstallButton() {
+  // Create floating install button if it doesn't exist
+  let floatingBtn = document.getElementById("pwaFloatingBtn");
+
+  if (!floatingBtn) {
+    floatingBtn = document.createElement("button");
+    floatingBtn.id = "pwaFloatingBtn";
+    floatingBtn.className = "pwa-floating-btn";
+    floatingBtn.innerHTML = `
+      <i class="fas fa-download"></i>
+      <span>Install App</span>
+    `;
+    document.body.appendChild(floatingBtn);
+
+    // Add styles
+    const styles = document.createElement("style");
+    styles.textContent = `
+      .pwa-floating-btn {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: linear-gradient(135deg, #4361ee, #3a0ca3);
+        color: white;
+        border: none;
+        padding: 15px 20px;
+        border-radius: 25px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        box-shadow: 0 5px 20px rgba(67, 97, 238, 0.3);
+        z-index: 9998;
+        animation: floatPulse 2s infinite;
+        transition: all 0.3s ease;
+      }
+      
+      .pwa-floating-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4);
+      }
+      
+      @keyframes floatPulse {
+        0% {
+          transform: translateY(0);
+          box-shadow: 0 5px 20px rgba(67, 97, 238, 0.3);
+        }
+        50% {
+          transform: translateY(-5px);
+          box-shadow: 0 10px 25px rgba(67, 97, 238, 0.4);
+        }
+        100% {
+          transform: translateY(0);
+          box-shadow: 0 5px 20px rgba(67, 97, 238, 0.3);
+        }
+      }
+      
+      @media (max-width: 768px) {
+        .pwa-floating-btn {
+          bottom: 20px;
+          right: 20px;
+          padding: 12px 15px;
+        }
+        
+        .pwa-floating-btn span {
+          display: none;
+        }
+      }
+    `;
+    document.head.appendChild(styles);
+
+    // Add click event
+    floatingBtn.addEventListener("click", () => {
+      triggerPWAInstall();
+    });
+  }
+
+  floatingBtn.style.display = "flex";
+}
+
+function hidePWAInstallButton() {
+  const floatingBtn = document.getElementById("pwaFloatingBtn");
+  if (floatingBtn) {
+    floatingBtn.style.display = "none";
+  }
+}
 
 function initSupabase() {
   if (!supabase) {
@@ -975,24 +1107,491 @@ function showManualInstallInstructions() {
 
 // Track user login for PWA prompts
 function trackUserLogin() {
-  const loginCount = parseInt(localStorage.getItem('login_count') || 0) + 1;
-  localStorage.setItem('login_count', loginCount.toString());
-  localStorage.setItem('last_login', new Date().toISOString());
-  
+  const loginCount = parseInt(localStorage.getItem("login_count") || 0) + 1;
+  localStorage.setItem("login_count", loginCount.toString());
+  localStorage.setItem("last_login", new Date().toISOString());
+
   console.log(`User login #${loginCount}`);
-  
+
   // Show install prompt on specific logins (1st, 3rd, 5th)
   if ([1, 3, 5].includes(loginCount)) {
     setTimeout(() => {
-      if (!localStorage.getItem('pwa_auto_install_shown')) {
+      if (!localStorage.getItem("pwa_auto_install_shown")) {
         autoShowInstallPrompt();
       }
     }, 5000);
   }
 }
 
-// Call this function after successful login
-// Add this line in your auth success section:
+// Auto-show install prompt for logged-in users
+function showAutoInstallPrompt() {
+  console.log("🔄 Checking if should show auto-install prompt...");
+
+  // Check if already installed
+  if (localStorage.getItem("pwa_installed") === "true") {
+    console.log("⏩ Already installed, skipping prompt");
+    return;
+  }
+
+  // Check if already shown today
+  const lastShown = localStorage.getItem("pwa_prompt_last_shown");
+  const today = new Date().toDateString();
+
+  if (lastShown === today) {
+    console.log("⏩ Already shown today, skipping");
+    return;
+  }
+
+  // Check if user has declined before
+  if (localStorage.getItem("pwa_prompt_declined") === "true") {
+    console.log("⏩ User declined before, skipping");
+    return;
+  }
+
+  // Check if we have deferredPrompt
+  if (!window.deferredPrompt) {
+    console.log("⚠️ No install prompt available yet");
+    return;
+  }
+
+  console.log("✅ Showing auto-install prompt...");
+
+  // Create notification-style prompt
+  const notification = document.createElement("div");
+  notification.className = "pwa-auto-prompt";
+  notification.innerHTML = `
+    <div class="pwa-prompt-content">
+      <div class="pwa-prompt-header">
+        <i class="fas fa-rocket"></i>
+        <div class="pwa-prompt-text">
+          <strong>Install ZEVRA App</strong>
+          <span>For better banking experience</span>
+        </div>
+      </div>
+      <div class="pwa-prompt-actions">
+        <button class="pwa-prompt-install">
+          <i class="fas fa-download"></i> Install
+        </button>
+        <button class="pwa-prompt-close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+  `;
+
+  // Add styles
+  const styles = document.createElement("style");
+  styles.textContent = `
+    .pwa-auto-prompt {
+      position: fixed;
+      bottom: 100px;
+      right: 30px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      border: 1px solid #eaeaea;
+      z-index: 9999;
+      animation: slideInRight 0.3s ease;
+      max-width: 350px;
+      overflow: hidden;
+    }
+    
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    .pwa-prompt-content {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      gap: 15px;
+    }
+    
+    .pwa-prompt-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+    }
+    
+    .pwa-prompt-header i {
+      font-size: 24px;
+      color: #4361ee;
+      background: #f0f7ff;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .pwa-prompt-text {
+      flex: 1;
+    }
+    
+    .pwa-prompt-text strong {
+      display: block;
+      color: #333;
+      font-size: 14px;
+      margin-bottom: 3px;
+    }
+    
+    .pwa-prompt-text span {
+      color: #666;
+      font-size: 12px;
+    }
+    
+    .pwa-prompt-actions {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .pwa-prompt-install {
+      background: #4361ee;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+    }
+    
+    .pwa-prompt-close {
+      background: #f0f7ff;
+      color: #4361ee;
+      border: 1px solid #eaeaea;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    @media (max-width: 768px) {
+      .pwa-auto-prompt {
+        bottom: 80px;
+        right: 15px;
+        left: 15px;
+        max-width: none;
+      }
+    }
+  `;
+
+  document.head.appendChild(styles);
+  document.body.appendChild(notification);
+
+  // Mark as shown today
+  localStorage.setItem("pwa_prompt_last_shown", today);
+
+  // Event listeners
+  notification
+    .querySelector(".pwa-prompt-install")
+    .addEventListener("click", () => {
+      triggerPWAInstall();
+      notification.remove();
+      styles.remove();
+    });
+
+  notification
+    .querySelector(".pwa-prompt-close")
+    .addEventListener("click", () => {
+      notification.remove();
+      styles.remove();
+      localStorage.setItem("pwa_prompt_declined", "true");
+      showNotification("You can install anytime from the menu", "info");
+    });
+
+  // Auto-remove after 30 seconds
+  setTimeout(() => {
+    if (document.body.contains(notification)) {
+      notification.remove();
+      styles.remove();
+    }
+  }, 30000);
+}
+
+// Trigger PWA installation
+async function triggerPWAInstall() {
+  console.log("🚀 Attempting PWA install...");
+
+  if (!window.deferredPrompt) {
+    console.log("⚠️ No install prompt available");
+    showManualInstallGuide();
+    return;
+  }
+
+  try {
+    // Show the native install prompt
+    window.deferredPrompt.prompt();
+
+    // Wait for user to respond
+    const { outcome } = await window.deferredPrompt.userChoice;
+
+    console.log(`📊 User response: ${outcome}`);
+
+    if (outcome === "accepted") {
+      console.log("✅ User accepted installation");
+      showNotification("Installing ZEVRA app...", "success");
+
+      // Update UI
+      hidePWAInstallButton();
+
+      // Clear the deferredPrompt
+      window.deferredPrompt = null;
+    } else {
+      console.log("❌ User declined installation");
+      showNotification("Installation cancelled", "info");
+      localStorage.setItem("pwa_prompt_declined", "true");
+    }
+  } catch (error) {
+    console.error("❌ Install error:", error);
+    showManualInstallGuide();
+  }
+}
+// Show manual install guide
+function showManualInstallGuide() {
+  const modal = document.createElement("div");
+  modal.className = "pwa-manual-guide";
+  modal.innerHTML = `
+    <div class="pwa-guide-content">
+      <div class="pwa-guide-header">
+        <h3><i class="fas fa-mobile-alt"></i> Install ZEVRA App</h3>
+        <button class="pwa-guide-close">&times;</button>
+      </div>
+      
+      <div class="pwa-guide-body">
+        <div class="device-guide">
+          <div class="guide-item">
+            <div class="guide-icon">
+              <i class="fab fa-android"></i>
+            </div>
+            <div class="guide-text">
+              <h4>Android (Chrome)</h4>
+              <p>Tap ⋮ menu → <strong>"Install app"</strong></p>
+            </div>
+          </div>
+          
+          <div class="guide-item">
+            <div class="guide-icon">
+              <i class="fab fa-apple"></i>
+            </div>
+            <div class="guide-text">
+              <h4>iPhone (Safari)</h4>
+              <p>Tap Share → <strong>"Add to Home Screen"</strong></p>
+            </div>
+          </div>
+          
+          <div class="guide-item">
+            <div class="guide-icon">
+              <i class="fas fa-desktop"></i>
+            </div>
+            <div class="guide-text">
+              <h4>Desktop (Chrome/Edge)</h4>
+              <p>Click <i class="fas fa-download"></i> in address bar</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="pwa-benefits">
+          <h4><i class="fas fa-star"></i> Benefits:</h4>
+          <ul>
+            <li><i class="fas fa-bolt"></i> 50% faster loading</li>
+            <li><i class="fas fa-bell"></i> Push notifications</li>
+            <li><i class="fas fa-wifi-slash"></i> Works offline</li>
+            <li><i class="fas fa-home"></i> Home screen access</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="pwa-guide-footer">
+        <button class="pwa-guide-gotit">Got it, thanks!</button>
+      </div>
+    </div>
+  `;
+
+  const styles = document.createElement("style");
+  styles.textContent = `
+    .pwa-manual-guide {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100000;
+      padding: 20px;
+    }
+    
+    .pwa-guide-content {
+      background: white;
+      border-radius: 15px;
+      max-width: 500px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      animation: guideSlideUp 0.3s ease;
+    }
+    
+    @keyframes guideSlideUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    .pwa-guide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      border-bottom: 1px solid #eaeaea;
+    }
+    
+    .pwa-guide-header h3 {
+      margin: 0;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .pwa-guide-close {
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: #666;
+      cursor: pointer;
+      line-height: 1;
+    }
+    
+    .pwa-guide-body {
+      padding: 20px;
+    }
+    
+    .device-guide {
+      margin-bottom: 25px;
+    }
+    
+    .guide-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .guide-item:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+    
+    .guide-icon {
+      width: 50px;
+      height: 50px;
+      background: #f0f7ff;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #4361ee;
+    }
+    
+    .guide-text h4 {
+      margin: 0 0 5px 0;
+      color: #333;
+    }
+    
+    .guide-text p {
+      margin: 0;
+      color: #666;
+      font-size: 14px;
+    }
+    
+    .pwa-benefits {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 10px;
+    }
+    
+    .pwa-benefits h4 {
+      margin: 0 0 10px 0;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .pwa-benefits ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+    
+    .pwa-benefits li {
+      margin-bottom: 8px;
+      color: #555;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .pwa-benefits li i {
+      color: #4361ee;
+      width: 20px;
+    }
+    
+    .pwa-guide-footer {
+      padding: 20px;
+      border-top: 1px solid #eaeaea;
+      text-align: center;
+    }
+    
+    .pwa-guide-gotit {
+      background: #4361ee;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+    }
+  `;
+
+  document.head.appendChild(styles);
+  document.body.appendChild(modal);
+
+  // Event listeners
+  modal.querySelector(".pwa-guide-close").addEventListener("click", () => {
+    modal.remove();
+    styles.remove();
+  });
+
+  modal.querySelector(".pwa-guide-gotit").addEventListener("click", () => {
+    modal.remove();
+    styles.remove();
+  });
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.remove();
+      styles.remove();
+    }
+  });
+}
 
 // Load admin payment methods for deposit section
 async function loadAdminPaymentMethods() {
