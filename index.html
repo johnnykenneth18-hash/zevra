@@ -15,6 +15,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#4361ee">
 
+
     <!-- Apple Touch Icons -->
     <link rel="apple-touch-icon" href="/icons/icon-152x152.png">
     <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png">
@@ -30,6 +31,12 @@
 
     <!-- Manifest -->
     <link rel="manifest" href="manifest.json">
+
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://*.supabase.co https://cdnjs.cloudflare.com;
+               script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://unpkg.com;
+               style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
+               font-src 'self' https://cdnjs.cloudflare.com;
+               connect-src 'self' https://*.supabase.co https://cdnjs.cloudflare.com;">
 </head>
 
 <body>
@@ -1571,6 +1578,84 @@
         </div>
     </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <script>
         // Hide splash screen when app is loaded
         window.addEventListener('load', function () {
@@ -1618,569 +1703,453 @@
         <span class="btn-text">Install App</span>
     </button>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <script>
-        // PWA Installation Handler
-        
-        const pwaInstallBtn = document.getElementById('pwaInstallBtn');
 
-        // Show install button when PWA can be installed
-        window.addEventListener('beforeinstallprompt', (e) => {
-            console.log('📱 PWA install prompt available');
-            e.preventDefault();
-            deferredPrompt = e;
+        // Enhanced PWA Install Handler
+        class PWAInstallManager {
+            constructor() {
+                this.deferredPrompt = null;
+                this.hasShownPrompt = false;
 
-            // Show our custom install button
-            pwaInstallBtn.style.display = 'flex';
+                this.setupEventListeners();
+                this.checkInstallStatus();
+            }
 
-            // Auto-hide after 30 seconds
-            setTimeout(() => {
-                if (pwaInstallBtn.style.display === 'flex') {
-                    pwaInstallBtn.style.display = 'none';
+            setupEventListeners() {
+                // Before install prompt
+                window.addEventListener('beforeinstallprompt', (e) => {
+                    console.log('📱 PWA install prompt available');
+                    e.preventDefault();
+                    this.deferredPrompt = e;
+
+                    // Show auto-prompt after 30 seconds
+                    setTimeout(() => {
+                        if (!this.hasShownPrompt && !this.isInstalled()) {
+                            this.showSmartPrompt();
+                        }
+                    }, 30000);
+                });
+
+                // App installed
+                window.addEventListener('appinstalled', () => {
+                    console.log('🎉 PWA installed!');
+                    this.hasShownPrompt = true;
+                    this.trackInstallation('auto');
+                    this.hideInstallButtons();
+                });
+
+                // Track user engagement
+                this.trackUserEngagement();
+            }
+
+            checkInstallStatus() {
+                // Don't show if already installed
+                if (this.isInstalled()) {
+                    this.hideInstallButtons();
+                    return;
                 }
-            }, 30000);
-        });
 
-        // Handle install button click
-        pwaInstallBtn.addEventListener('click', async () => {
-            if (!deferredPrompt) {
-                // If no prompt available, show instructions
-                showInstallInstructions();
-                return;
+                // Show install button on dashboard for engaged users
+                if (window.location.pathname.includes('dashboard.html')) {
+                    setTimeout(() => {
+                        this.showInstallPromotion();
+                    }, 10000);
+                }
             }
 
-            // Show the native install prompt
-            deferredPrompt.prompt();
-
-            // Wait for user choice
-            const { outcome } = await deferredPrompt.userChoice;
-
-            console.log(`User response: ${outcome}`);
-
-            // Hide button if installed
-            if (outcome === 'accepted') {
-                pwaInstallBtn.innerHTML = '<i class="fas fa-check"></i> <span class="btn-text">Installed!</span>';
-                pwaInstallBtn.style.background = '#27ae60';
-                pwaInstallBtn.disabled = true;
-
-                // Hide after 3 seconds
-                setTimeout(() => {
-                    pwaInstallBtn.style.display = 'none';
-                }, 3000);
-
-                // Track installation
-                trackInstallation('accepted');
+            isInstalled() {
+                return window.matchMedia('(display-mode: standalone)').matches ||
+                    window.navigator.standalone === true;
             }
 
-            deferredPrompt = null;
-        });
+            async showSmartPrompt() {
+                if (!this.deferredPrompt || this.hasShownPrompt) return;
 
-        // Hide button if already installed
-        window.addEventListener('appinstalled', () => {
-            console.log('🎉 PWA installed successfully!');
-            pwaInstallBtn.style.display = 'none';
-            trackInstallation('auto');
-        });
+                // Wait for user to be engaged
+                const timeOnSite = performance.now() / 1000;
+                if (timeOnSite < 30) return; const modal = this.createInstallModal(); document.body.appendChild(modal); // Center the
+                modal.style.position = 'fixed'; modal.style.top = '50%'; modal.style.left = '50%';
+                modal.style.transform = 'translate(-50%, -50%)'; modal.style.zIndex = '10000'; this.hasShownPrompt = true;
+            }
+            createInstallModal() {
+                const modal = document.createElement('div'); modal.className = 'pwa-install-modal';
+                modal.style.cssText = ` background: white; padding: 30px; border-radius: 15px; box-shadow: 0 20px 60px
+        rgba(0,0,0,0.3); max-width: 400px; text-align: center; animation: slideInDown 0.5s ease; `; modal.innerHTML = `
+        <div class="install-modal-content">
+        <div class="install-icon">
+            <i class="fas fa-rocket" style="font-size: 48px; color: #4361ee; margin-bottom: 20px;"></i>
+        </div>
+        <h2 style="margin: 0 0 15px 0; color: #333;">Install ZEVRA App</h2>
+        <p style="color: #666; margin-bottom: 25px; line-height: 1.5;">
+            Get faster access, push notifications, and work offline!
+        </p>
 
-        // Check if already in standalone mode (app already installed)
-        if (window.matchMedia('(display-mode: standalone)').matches ||
-            window.navigator.standalone === true) {
-            pwaInstallBtn.style.display = 'none';
-            console.log('📱 Already running in app mode');
-        }
-
-        // Show install instructions modal
-        function showInstallInstructions() {
-            const modal = document.createElement('div');
-            modal.className = 'install-instructions-modal';
-            modal.innerHTML = `
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3><i class="fas fa-download"></i> Install ZEVRA App</h3>
-                    <button class="modal-close">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <div class="device-selector">
-                        <button class="device-btn active" data-device="mobile">
-                            <i class="fas fa-mobile-alt"></i> Mobile
-                        </button>
-                        <button class="device-btn" data-device="desktop">
-                            <i class="fas fa-desktop"></i> Desktop
-                        </button>
-                    </div>
-                    
-                    <div class="instructions mobile-instructions">
-                        <h4><i class="fab fa-android"></i> Android (Chrome)</h4>
-                        <div class="instruction-step">
-                            <div class="step-number">1</div>
-                            <div class="step-content">
-                                <p>Tap the <strong>three dots menu</strong> (⋮) in Chrome</p>
-                            </div>
-                        </div>
-                        <div class="instruction-step">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <p>Select <strong>"Install app"</strong> or <strong>"Add to Home screen"</strong></p>
-                            </div>
-                        </div>
-                        <div class="instruction-step">
-                            <div class="step-number">3</div>
-                            <div class="step-content">
-                                <p>Tap <strong>"Install"</strong> when prompted</p>
-                            </div>
-                        </div>
-                        
-                        <h4 style="margin-top: 20px;"><i class="fab fa-apple"></i> iPhone/iPad (Safari)</h4>
-                        <div class="instruction-step">
-                            <div class="step-number">1</div>
-                            <div class="step-content">
-                                <p>Tap the <strong>Share button</strong> <i class="fas fa-share-square"></i></p>
-                            </div>
-                        </div>
-                        <div class="instruction-step">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <p>Scroll and select <strong>"Add to Home Screen"</strong></p>
-                            </div>
-                        </div>
-                        <div class="instruction-step">
-                            <div class="step-number">3</div>
-                            <div class="step-content">
-                                <p>Tap <strong>"Add"</strong> in top right corner</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="instructions desktop-instructions" style="display: none;">
-                        <h4><i class="fab fa-chrome"></i> Google Chrome</h4>
-                        <div class="instruction-step">
-                            <div class="step-number">1</div>
-                            <div class="step-content">
-                                <p>Look for the <strong>install icon</strong> <i class="fas fa-download"></i> in the address bar</p>
-                            </div>
-                        </div>
-                        <div class="instruction-step">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <p>Click it and select <strong>"Install"</strong></p>
-                            </div>
-                        </div>
-                        
-                        <h4 style="margin-top: 20px;"><i class="fab fa-edge"></i> Microsoft Edge</h4>
-                        <div class="instruction-step">
-                            <div class="step-number">1</div>
-                            <div class="step-content">
-                                <p>Click the <strong>"Apps"</strong> button in the toolbar</p>
-                            </div>
-                        </div>
-                        <div class="instruction-step">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <p>Select <strong>"Install this site as an app"</strong></p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="app-features">
-                        <h4>App Features:</h4>
-                        <div class="features-grid">
-                            <div class="feature">
-                                <i class="fas fa-bolt"></i>
-                                <span>Fast Loading</span>
-                            </div>
-                            <div class="feature">
-                                <i class="fas fa-bell"></i>
-                                <span>Push Notifications</span>
-                            </div>
-                            <div class="feature">
-                                <i class="fas fa-wifi-slash"></i>
-                                <span>Offline Access</span>
-                            </div>
-                            <div class="feature">
-                                <i class="fas fa-home"></i>
-                                <span>Home Screen Access</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn-primary" id="tryAgainInstall">Try Auto-Install</button>
-                    <button class="btn-secondary modal-close">Close</button>
-                </div>
+        <div class="features" style="text-align: left; margin-bottom: 25px;">
+            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <i class="fas fa-bolt" style="color: #4cc9f0; margin-right: 10px;"></i>
+                <span>50% faster loading</span>
             </div>
+            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <i class="fas fa-bell" style="color: #f72585; margin-right: 10px;"></i>
+                <span>Investment alerts</span>
+            </div>
+            <div style="display: flex; align-items: center;">
+                <i class="fas fa-wifi-slash" style="color: #7209b7; margin-right: 10px;"></i>
+                <span>Works offline</span>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+            <button class="install-btn" style="
+            flex: 2;
+            background: #4361ee;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+          ">
+                <i class="fas fa-download"></i> Install Now
+            </button>
+            <button class="cancel-btn" style="
+            flex: 1;
+            background: #f0f7ff;
+            color: #4361ee;
+            border: 2px solid #4361ee;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+          ">
+                Later
+            </button>
+        </div>
+
+        <div style="margin-top: 15px; font-size: 12px; color: #999;">
+            <i class="fas fa-info-circle"></i> No download needed - adds to home screen
+        </div>
+        </div>
+
+        <style>
+            @keyframes slideInDown {
+                from {
+                    transform: translate(-50%, -100%);
+                    opacity: 0;
+                }
+
+                to {
+                    transform: translate(-50%, -50%);
+                    opacity: 1;
+                }
+            }
+        </style>
         `;
 
-            document.body.appendChild(modal);
+                // Add event listeners
+                modal.querySelector('.install-btn').addEventListener('click', () => {
+                    this.triggerInstall();
+                    modal.remove();
+                });
 
-            // Add modal styles
-            const modalStyles = document.createElement('style');
-            modalStyles.textContent = `
-            .install-instructions-modal {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.8);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 10000;
-                backdrop-filter: blur(5px);
-            }
-            
-            .install-instructions-modal .modal-content {
-                background: white;
-                border-radius: 15px;
-                width: 90%;
-                max-width: 500px;
-                max-height: 80vh;
-                overflow-y: auto;
-                box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            }
-            
-            .install-instructions-modal .modal-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 20px;
-                border-bottom: 1px solid #eaeaea;
-                background: linear-gradient(135deg, #4361ee, #3a0ca3);
-                color: white;
-                border-radius: 15px 15px 0 0;
-            }
-            
-            .install-instructions-modal .modal-header h3 {
-                margin: 0;
-                font-size: 18px;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
-            
-            .install-instructions-modal .modal-close {
-                background: none;
-                border: none;
-                color: white;
-                font-size: 24px;
-                cursor: pointer;
-                line-height: 1;
-            }
-            
-            .install-instructions-modal .modal-body {
-                padding: 20px;
-            }
-            
-            .device-selector {
-                display: flex;
-                gap: 10px;
-                margin-bottom: 20px;
-            }
-            
-            .device-btn {
-                flex: 1;
-                padding: 12px;
-                background: #f0f7ff;
-                border: 2px solid #eaeaea;
-                border-radius: 8px;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 8px;
-                font-weight: 600;
-                color: #333;
-                transition: all 0.3s;
-            }
-            
-            .device-btn.active {
-                background: #4361ee;
-                color: white;
-                border-color: #4361ee;
-            }
-            
-            .instruction-step {
-                display: flex;
-                gap: 15px;
-                margin-bottom: 15px;
-                align-items: flex-start;
-            }
-            
-            .step-number {
-                width: 30px;
-                height: 30px;
-                background: #4361ee;
-                color: white;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-weight: bold;
-                flex-shrink: 0;
-            }
-            
-            .step-content p {
-                margin: 0;
-                color: #333;
-                line-height: 1.5;
-            }
-            
-            .app-features {
-                margin-top: 25px;
-                padding-top: 20px;
-                border-top: 1px solid #eaeaea;
-            }
-            
-            .features-grid {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-                margin-top: 15px;
-            }
-            
-            .feature {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                padding: 10px;
-                background: #f8f9fa;
-                border-radius: 6px;
-                font-size: 14px;
-            }
-            
-            .feature i {
-                color: #4361ee;
-            }
-            
-            .modal-footer {
-                padding: 20px;
-                border-top: 1px solid #eaeaea;
-                display: flex;
-                gap: 10px;
-                justify-content: flex-end;
-            }
-            
-            .btn-primary {
-                background: #4361ee;
-                color: white;
-                border: none;
-                padding: 10px 20px;
-                border-radius: 6px;
-                cursor: pointer;
-                font-weight: 600;
-            }
-            
-            .btn-secondary {
-                background: #eaeaea;
-                color: #333;
-                border: none;
-                padding: 10px 20px;
-                border-radius: 6px;
-                cursor: pointer;
-                font-weight: 600;
-            }
-            
-            h4 {
-                margin: 0 0 15px 0;
-                color: #333;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
+                modal.querySelector('.cancel-btn').addEventListener('click', () => {
+                    modal.remove();
+                    localStorage.setItem('pwa_prompt_dismissed', 'true');
+                });
+
+                // Close on background click
+                const overlay = document.createElement('div');
+                overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 9999;
         `;
-            document.head.appendChild(modalStyles);
 
-            // Device selector functionality
-            const deviceBtns = modal.querySelectorAll('.device-btn');
-            const mobileInstructions = modal.querySelector('.mobile-instructions');
-            const desktopInstructions = modal.querySelector('.desktop-instructions');
+                overlay.addEventListener('click', () => {
+                    modal.remove();
+                    overlay.remove();
+                });
 
-            deviceBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    deviceBtns.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
+                document.body.appendChild(overlay);
 
-                    if (btn.dataset.device === 'mobile') {
-                        mobileInstructions.style.display = 'block';
-                        desktopInstructions.style.display = 'none';
-                    } else {
-                        mobileInstructions.style.display = 'none';
-                        desktopInstructions.style.display = 'block';
+                return modal;
+            }
+
+            showInstallPromotion() {
+                // Check if already dismissed
+                if (localStorage.getItem('pwa_prompt_dismissed')) return;
+
+                const promo = document.createElement('div');
+                promo.className = 'install-promotion-bar';
+                promo.style.cssText = `
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(135deg, #4361ee, #3a0ca3);
+        color: white;
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 9998;
+        animation: slideUp 0.3s ease;
+        `;
+
+                promo.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <i class="fas fa-mobile-alt" style="font-size: 24px;"></i>
+            <div>
+                <h4 style="margin: 0; font-size: 16px;">Install ZEVRA App</h4>
+                <p style="margin: 5px 0 0 0; font-size: 14px; opacity: 0.9;">Better experience & notifications</p>
+            </div>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <button class="promo-install" style="
+          background: white;
+          color: #4361ee;
+          border: none;
+          padding: 8px 20px;
+          border-radius: 20px;
+          cursor: pointer;
+          font-weight: 600;
+        ">
+                Install
+            </button>
+            <button class="promo-dismiss" style="
+          background: transparent;
+          color: white;
+          border: 1px solid rgba(255,255,255,0.3);
+          padding: 8px 15px;
+          border-radius: 20px;
+          cursor: pointer;
+        ">
+                Not now
+            </button>
+        </div>
+
+        <style>
+            @keyframes slideUp {
+                from {
+                    transform: translateY(100%);
+                }
+
+                to {
+                    transform: translateY(0);
+                }
+            }
+        </style>
+        `;
+
+                document.body.appendChild(promo);
+
+                promo.querySelector('.promo-install').addEventListener('click', () => {
+                    this.triggerInstall();
+                    promo.remove();
+                });
+
+                promo.querySelector('.promo-dismiss').addEventListener('click', () => {
+                    promo.remove();
+                    localStorage.setItem('pwa_prompt_dismissed', 'true');
+                });
+
+                // Auto-dismiss after 30 seconds
+                setTimeout(() => {
+                    if (document.body.contains(promo)) {
+                        promo.remove();
                     }
+                }, 30000);
+            }
+
+            async triggerInstall() {
+                if (!this.deferredPrompt) {
+                    this.showInstallInstructions();
+                    return;
+                }
+
+                try {
+                    const result = await this.deferredPrompt.prompt();
+                    console.log('Install prompt result:', result);
+
+                    if (result.outcome === 'accepted') {
+                        this.trackInstallation('accepted');
+                    }
+
+                    this.deferredPrompt = null;
+                } catch (error) {
+                    console.error('Install prompt error:', error);
+                }
+            }
+
+            showInstallInstructions() {
+                // Show manual install instructions (your existing function)
+                // ...
+            }
+
+            hideInstallButtons() {
+                document.querySelectorAll('.pwa-install-btn, .install-promotion').forEach(el => {
+                    el.style.display = 'none';
                 });
-            });
+            }
 
-            // Close buttons
-            modal.querySelectorAll('.modal-close').forEach(closeBtn => {
-                closeBtn.addEventListener('click', () => {
-                    modal.remove();
-                    modalStyles.remove();
+            trackUserEngagement() {
+                // Track user activity to determine when to show install prompt
+                let engagementScore = 0;
+
+                // Score based on page views
+                const pageViews = parseInt(localStorage.getItem('page_views') || 0) + 1;
+                localStorage.setItem('page_views', pageViews);
+                engagementScore += Math.min(pageViews * 10, 50);
+
+                // Score based on time on site
+                const startTime = Date.now();
+                window.addEventListener('beforeunload', () => {
+                    const timeOnPage = (Date.now() - startTime) / 1000;
+                    engagementScore += Math.min(timeOnPage / 10, 30);
+                    localStorage.setItem('engagement_score', engagementScore);
                 });
-            });
+            }
 
-            // Try again button
-            modal.querySelector('#tryAgainInstall').addEventListener('click', () => {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                } else {
-                    alert('Auto-install not available. Please follow the manual instructions above.');
-                }
-            });
+            trackInstallation(type) {
+                const data = {
+                    type: type,
+                    platform: navigator.platform,
+                    userAgent: navigator.userAgent,
+                    timestamp: new Date().toISOString(),
+                    engagementScore: localStorage.getItem('engagement_score') || 0,
+                    pageViews: localStorage.getItem('page_views') || 0
+                };
 
-            // Close on outside click
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.remove();
-                    modalStyles.remove();
-                }
-            });
+                localStorage.setItem('pwa_install_data', JSON.stringify(data));
+
+                // Optional: Send to analytics
+                console.log('📊 PWA Installation tracked:', data);
+            }
         }
 
-        // Track installation
-        function trackInstallation(type) {
-            console.log(`📊 Installation tracked: ${type}`);
-            // You can send this to your analytics
-            const data = {
-                type: type,
-                platform: navigator.platform,
-                userAgent: navigator.userAgent,
-                timestamp: new Date().toISOString()
-            };
-
-            // Store in localStorage
-            localStorage.setItem('pwa_install_tracked', JSON.stringify(data));
-
-            // Optional: Send to your server
-            // fetch('/api/track-install', {
-            //     method: 'POST',
-            //     body: JSON.stringify(data)
-            // });
-        }
-
-        // Check if we should show install promotion
-        setTimeout(() => {
-            const installTracked = localStorage.getItem('pwa_install_tracked');
-            const isDismissed = localStorage.getItem('pwa_install_dismissed');
-
-            // Show install button if:
-            // 1. Not already installed
-            // 2. Not dismissed by user
-            // 3. Not tracked as installed
-            if (!installTracked && !isDismissed && pwaInstallBtn.style.display === 'none') {
-                // Show gentle promotion after 10 seconds
-                setTimeout(() => {
-                    showInstallPromotion();
-                }, 10000);
-            }
-        }, 1000);
-
-        // Show install promotion
-        function showInstallPromotion() {
-            const promotion = document.createElement('div');
-            promotion.className = 'install-promotion';
-            promotion.innerHTML = `
-            <div class="promotion-content">
-                <i class="fas fa-mobile-alt"></i>
-                <div>
-                    <h4>Get the ZEVRA App</h4>
-                    <p>Install for faster access and notifications</p>
-                </div>
-                <button class="promotion-install">Install</button>
-                <button class="promotion-dismiss">&times;</button>
-            </div>
-        `;
-
-            promotion.style.cssText = `
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            z-index: 9998;
-            animation: slideInRight 0.3s ease;
-            border: 1px solid #eaeaea;
-            max-width: 350px;
-        `;
-
-            const promotionStyles = document.createElement('style');
-            promotionStyles.textContent = `
-            @keyframes slideInRight {
-                from { transform: translateX(100%); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
-            }
-            
-            .install-promotion .promotion-content {
-                padding: 15px;
-                display: flex;
-                align-items: center;
-                gap: 15px;
-            }
-            
-            .install-promotion i {
-                font-size: 24px;
-                color: #4361ee;
-            }
-            
-            .install-promotion h4 {
-                margin: 0 0 5px 0;
-                color: #333;
-                font-size: 16px;
-            }
-            
-            .install-promotion p {
-                margin: 0;
-                color: #666;
-                font-size: 14px;
-            }
-            
-            .promotion-install {
-                background: #4361ee;
-                color: white;
-                border: none;
-                padding: 8px 15px;
-                border-radius: 6px;
-                cursor: pointer;
-                font-weight: 600;
-                white-space: nowrap;
-            }
-            
-            .promotion-dismiss {
-                background: none;
-                border: none;
-                color: #999;
-                font-size: 20px;
-                cursor: pointer;
-                padding: 0 5px;
-            }
-        `;
-
-            document.head.appendChild(promotionStyles);
-            document.body.appendChild(promotion);
-
-            // Install button in promotion
-            promotion.querySelector('.promotion-install').addEventListener('click', () => {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                } else {
-                    showInstallInstructions();
-                }
-                promotion.remove();
-            });
-
-            // Dismiss button
-            promotion.querySelector('.promotion-dismiss').addEventListener('click', () => {
-                promotion.remove();
-                localStorage.setItem('pwa_install_dismissed', 'true');
-            });
-
-            // Auto-dismiss after 15 seconds
-            setTimeout(() => {
-                if (document.body.contains(promotion)) {
-                    promotion.remove();
-                }
-            }, 15000);
-        }
+        // Initialize PWA manager when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            window.pwaManager = new PWAInstallManager();
+        });
     </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <script>
         // First visit install promotion
@@ -2329,6 +2298,92 @@
         }
     </script>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <script>
         // Smart install analytics and prompts
         class PWAPromoter {
@@ -2359,7 +2414,7 @@
 
             setupSmartPrompts() {
                 // Show install prompt based on user behavior
-                 window.addEventListener('beforeinstallprompt', (e) => {
+                window.addEventListener('beforeinstallprompt', (e) => {
                     if (this.shouldShowPrompt()) {
                         this.showSmartPrompt(e);
                     }
